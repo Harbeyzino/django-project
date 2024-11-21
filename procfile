@@ -1,1 +1,1 @@
-web: gunicorn digiApp.wsgi:application
+gunicorn app:app
