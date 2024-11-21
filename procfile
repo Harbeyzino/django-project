@@ -1,0 +1,1 @@
+web gunicorn digiApp.wsgi:application --log-file -

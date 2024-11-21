@@ -1,0 +1,159 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Quality Grade Digital</title>
+
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="{% static 'sec_assets/fonts/material-icon/css/material-design-iconic-font.min.css' %}">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="{% static 'sec_assets/css/style.css' %}">
+
+
+    <style>
+        .alert {
+            transition: opacity 1s ease-in-out;
+
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main">
+
+        <section class="signup">
+            <div class="container">
+                <div class="signup-content">
+
+                    {% if messages %}
+                    <div class="alert-container fixed-top mb-3 w-100">
+                        <div class="container d-flex justify-content-center">
+                            <div class="alert-wrapper" style="max-width: 380px; width: 100%;">
+                                {% for message in messages %}
+                                    <div class="alert 
+                                        {% if message.tags == 'success' %}
+                                            alert-success
+                                        {% elif message.tags == 'warning' %}
+                                            alert-warning
+                                        {% elif message.tags == 'error' %}
+                                            alert-danger
+                                        {% elif message.tags == 'info' %}
+                                            alert-info
+                                        {% else %}
+                                            alert-info
+                                        {% endif %}
+                                        alert-dismissible fade show alert-with-line text-center d-flex align-items-center" role="alert">
+                                        <!-- Add the icon -->
+                                        {% if message.tags == 'success' %}
+                                            <i class="bi bi-check-circle-fill me-2 text-success fs-3"></i> 
+                                        {% elif message.tags == 'warning' %}
+                                            <i class="bi bi-exclamation-triangle-fill me-2 text-warning fs-3"></i> 
+                                        {% elif message.tags == 'error' %}
+                                            <i class="bi bi-x-circle-fill me-2 text-danger fs-3"></i> 
+                                        {% elif message.tags == 'info' %}
+                                            <i class="bi bi-info-circle-fill me-2 text-info fs-3"></i> ]
+                                        {% endif %}
+                                        <strong>{{ message }}</strong>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+
+
+                    <form method="POST" action="{% url 'security.register' %}" enctype="multipart/form-data" id="signup-form" class="signup-form">
+                        {% csrf_token %}
+                        <h2 class="form-title">Create Account</h2>
+
+                        <div class="form-group mb-3">
+                            <label for="fname" class="form-label">First Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="fname" id="fname"  required>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="lname" class="form-label">Last Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="lname" id="lname" required>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="username" id="username" required>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" name="email" id="email" required>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="password1" class="form-label">Password <span class="text-danger">*</span></label>
+                            <input type="password" class="form-control" name="password1" id="password1" required>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="password2" class="form-label">Repeat Password <span class="text-danger">*</span></label>
+                            <input type="password" class="form-control" name="password2" id="password2" required>
+                        </div>
+
+                        <div class="form-group mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" name="agree-term" id="agree-term" required>
+                            <label for="agree-term" class="form-check-label">
+                                I agree to all statements in the <a href="#" class="text-decoration-none">Terms of Service</a>
+                                <span class="text-danger"></span>
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" name="submit" id="submit" class="form-submit"/>
+                        </div>
+                    </form>
+
+                    <p class="loginhere">
+                        Already have an account? <a href="{% url 'security.login' %}" class="text-decoration-none">Login here</a>
+                    </p>
+
+                    <div class="text-center mt-3">
+                        <a href="#" class="text-decoration-none">Forgot your password?</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- JS -->
+    <script src="{% static 'sec_assets/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'sec_assets/js/main.js' %}"></script>
+
+    <!-- JS to automatically fade out the messages after 3 seconds with shrinking effect -->
+    <script>
+        window.onload = function() {
+            // Select all alert elements
+            const alerts = document.querySelectorAll('.alert');
+            
+            // Loop through each alert and fade it out after 5 seconds
+            alerts.forEach(function(alert) {
+                setTimeout(function() {
+                    alert.style.opacity = 0;  // Set opacity to 0 (fade out)
+                    alert.style.transition = "opacity 1s ease-in-out";  // Smooth transition
+                }, 5000);  // Delay the fade out by 5 seconds
+            });
+        };
+    </script>
+
+
+</body>
+</html>

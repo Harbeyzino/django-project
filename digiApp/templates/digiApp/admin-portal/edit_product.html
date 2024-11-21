@@ -1,0 +1,80 @@
+{% extends 'digiApp/admin-portal/base/ad-app.html' %}
+
+{% block content %}
+{% load static %}
+
+
+<!-- Include Sweetify Assets -->
+
+<div class="pagetitle text-center">
+    <h1>Edit Product</h1>
+    <nav class="text-center">
+      <ol class="breadcrumb justify-content-center">
+        <li class="breadcrumb-item text-center"><a href="{% url 'app.admin' %}">Home</a></li>
+        <li class="breadcrumb-item active">Edit Product</li>
+      </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section d-flex justify-content-center align-items-center">
+    <div class="row">
+      <div class="col-lg-12">
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Product Forms</h5>
+
+            <!-- General Form Elements -->
+            <form action="{% url 'app.update_product' product.id %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+              <div class="row mb-3">
+                <label for="title" class="col-sm-2 col-form-label">Title</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="title" id="title" value="{{ product.title }}">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="description" class="col-sm-2 col-form-label">Description</label>
+                <div class="col-sm-10">
+                  <textarea class="form-control" name="description" id="description">{{ product.description }}</textarea>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="price" class="col-sm-2 col-form-label">Price</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="price" id="price" value="{{ product.price }}">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="affiliate_link" class="col-sm-2 col-form-label">Affiliate Link</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="affiliate_link" id="affiliate_link" value="{{ product.affiliate_link }}">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="image" class="col-sm-2 col-form-label">File Upload</label>
+                <div class="col-sm-10">
+                  <input class="form-control" type="file" name="image" id="image">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-10 text-center">
+                  <button type="submit" class="btn btn-primary" style="padding-left: 100px; padding-right: 100px; margin-left: 50px;">Update Product</button>
+                </div>
+              </div>
+            </form><!-- End General Form Elements -->
+
+          </div>
+        </div>
+
+    </div>
+</div>
+
+
+{% load sweetify %} <!-- Ensure this is loaded in the template -->
+{% sweetify %} <!-- This renders Sweetify alerts -->
+
+
+
+
+{% endblock %}

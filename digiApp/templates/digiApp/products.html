@@ -1,0 +1,73 @@
+{% extends 'digiApp/admin-portal/base/ad-app.html' %}
+{% block content %}
+{% load static %}
+{% load sweetify %}
+
+<div class="col-12">
+    <div class="card top-selling overflow-auto">
+        <div class="filter">
+            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <li class="dropdown-header text-start">
+                    <h6>Filter</h6>
+                </li>
+                <li><a class="dropdown-item" href="#">Today</a></li>
+                <li><a class="dropdown-item" href="#">This Month</a></li>
+                <li><a class="dropdown-item" href="#">This Year</a></li>
+            </ul>
+        </div>
+
+        <div class="card-body pb-0">
+            <h5 class="card-title">Product <span>| Today</span></h5>
+
+            <ul class="list-group">
+                {% for product in products %}
+                <li class="list-group-item d-flex align-items-center">
+                    {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="" style="width: 50px; height: 50px; object-fit: cover; margin-right: 15px;">
+                    {% else %}
+                    <img src="{{ MEDIA_URL }}default.jpg" alt="Default Image" style="width: 50px; height: 50px; object-fit: cover; margin-right: 15px;">
+                    {% endif %}
+                    <div class="d-flex flex-column">
+                        <strong>{{ product.title }}</strong>
+                        <span>${{ product.price }}</span>
+                    </div>
+                    <div class="ms-auto">
+                        <a href="{% url 'app.edit_product' product.id %}">
+                            <button class="btn btn-sm btn-primary">Edit</button>
+                        </a>
+                        <button class="btn btn-sm btn-danger" onclick="confirmDelete({{ product.id }})">
+                            Delete
+                        </button>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+
+        </div>
+    </div>
+</div>
+
+<!-- SweetAlert2 Scripts -->
+<script>
+function confirmDelete(productId) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "This action cannot be undone.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Redirect to the delete URL
+            window.location.href = `{% url 'app.destroy_product' 0 %}`.replace(0, productId);
+        }
+    });
+}
+</script>
+
+{% sweetify %} <!-- Render Sweetify alerts -->
+{% endblock %}
