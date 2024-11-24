@@ -21,7 +21,7 @@ from datetime import datetime
 
 # Functionality to render the product view page
 @login_required
-@allowed_users(allowed_roles=['customer', 'admin'])
+@allowed_users(allowed_roles=['admin'])
 def products(request):
     # Logic to retrieve and display products
     products = Product.objects.all()
@@ -29,7 +29,6 @@ def products(request):
     return render(request, 'digiApp/products.html', {'products': products})
 
 # Home page, accessible to everyone but with authentication check
-@login_required
 def homepg(request):
     products = Product.objects.all()
     return render(request, 'digiApp/index.html', {'products': products})
@@ -95,7 +94,6 @@ def storeProduct(request):
 # Functionality to edit product (admin only)
 @login_required
 @allowed_users(allowed_roles=['admin'])
-
 def editProduct(request, id):
     product = get_object_or_404(Product, id=id)
     return render(request, 'digiApp/admin-portal/edit_product.html', {'product': product})
@@ -103,7 +101,6 @@ def editProduct(request, id):
 # Functionality to update the record in the DB (admin only)
 @login_required
 @allowed_users(allowed_roles=['admin'])
-
 def updateProduct(request, id):
     product = get_object_or_404(Product, id=id)
 
@@ -273,16 +270,15 @@ def no_permission(request):
     return render(request, 'digiApp/no_permission.html')
 
 # Logout functionality
-# @login_required
 def signOut(request):
     if request.user.is_authenticated:
         if request.user.is_staff:  # Check if the user is an admin
             logout(request)
-            return redirect('security.sign_in')  # Redirect to the form page for admins
+            return redirect('app.home')  # Redirect to the form page for admins
         else:
             logout(request)
             return redirect('app.home')  # Replace 'homepage' with your actual homepage URL name
-    return redirect('security.sign_in')  # Default redirect if the user is not authenticated
+    return redirect('app.home')  # Default redirect if the user is not authenticated
 
 
 # Admin portal home functionality

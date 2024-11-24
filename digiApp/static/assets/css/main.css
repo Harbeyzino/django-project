@@ -1707,3 +1707,14 @@ section,
 .starter-section {
   /* Add your styles here */
 }
+
+.carousel-image {
+  object-fit: cover;
+  height: 100vh; /* Full height for the hero section */
+}
+
+.carousel-caption {
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
