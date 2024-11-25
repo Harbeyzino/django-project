@@ -180,6 +180,6 @@ import dj_database_url
 
 DATABASES = {
     
-    'default': dj_database_url.parse('postgresql://productiondatabase_wth6_user:mtwlUk4OlkkaCacMglvVYGZXedWhYZ7U@dpg-ct27rdjqf0us73cj5sbg-a.oregon-postgres.render.com/productiondatabase_wth6')
+    'default': dj_database_url.parse(env('DATABASE_URL'))
 
 }
