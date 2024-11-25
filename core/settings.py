@@ -18,6 +18,15 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+import environ
+
+
+env = environ.Env()
+
+environ.Env.read_env()
+
+
+ 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -25,7 +34,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-^k%5@&&emff8*-*5qrq&xb-zp&lc*$pdg^jeneo&w+%qx!#zq8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -78,15 +87,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'core.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
 
 # Password validation
@@ -157,3 +158,28 @@ EMAIL_HOST_PASSWORD = 'nwzaqczbtdojrjoz'
 EMAIL_PORT = 465
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
+
+
+# Database
+# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+
+"""
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+"""
+
+
+# Render PostgreSQL database (live)
+
+import dj_database_url
+
+DATABASES = {
+    
+    'default': dj_database_url.parse('postgresql://productiondatabase_wth6_user:mtwlUk4OlkkaCacMglvVYGZXedWhYZ7U@dpg-ct27rdjqf0us73cj5sbg-a.oregon-postgres.render.com/productiondatabase_wth6')
+
+}
