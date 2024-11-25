@@ -3,25 +3,55 @@
 {% load static %}
 {% block content %}
 <!-- Hero Section -->
-<section id="hero" class="hero section dark-background">
   {% if user.is_authenticated %}
-  <img src="{% static 'assets/img/hero-bg.jpg' %}" alt="">
-  <div class="container" data-aos="fade-up" data-aos-delay="100">
-    <div class="row justify-content-start">
-      <div class="col-lg-8">
-        <h2>Welcome Back, {{ user.username }}!</h2>
-        <p>You're logged in and ready to explore the full features.</p>
-        <div class="container text-center py-5">
-          <p>See all listed blueprints</p>
-          <div class="down-arrow-container">
-            <div class="down-arrow"></div>
+  <section id="hero" class=" hero dark-background">
+    <div id="carouselExampleInterval" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+        <!-- First Slide -->
+        <div class="carousel-item active" data-interval="5000">
+          <img src="{% static 'assets/img/hero-bg.jpg' %}" class="d-block w-100 carousel-image" alt="Slide 1">
+          <div class="container" data-aos="fade-up" data-aos-delay="100">
+            <div class="row justify-content-start">
+              <div class="col-lg-8">
+                <h2>Welcome to QDG</h2>
+                <p>We're a team of talented designers creating innovative digital products to elevate your online presence.</p>
+                <a href="{% url 'security.signup' %}" class="btn-get-started">Get Started</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Second Slide -->
+        <div class="carousel-item" data-interval="5000">
+          <img src="{% static 'assets/img/cta-bg.jpg' %}" class="d-block w-100 carousel-image" alt="Slide 2">
+          <div class="container" data-aos="fade-up" data-aos-delay="100">
+            <div class="row justify-content-start">
+              <div class="col-lg-8">
+                <h2>Innovative Designs</h2>
+                <p>Experience creativity like never before.</p>
+                <a href="#services" class="btn-get-started">Explore More</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Third Slide -->
+        <div class="carousel-item" data-interval="5000">
+          <img src="{% static 'assets/img/services.jpg' %}" class="d-block w-100 carousel-image" alt="Slide 3">
+          <div class="container" data-aos="fade-up" data-aos-delay="100">
+            <div class="row justify-content-start">
+              <div class="col-lg-8">
+                <h2>Start Your Journey</h2>
+                <p>Join us today to unlock full access to our services.</p>
+                <a href="#contact" class="btn-get-started">Contact Us</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section><!-- /Hero Section -->
+  </section>  
+
   {% else %}
+  <section id="hero" class="hero section dark-background">
     <img src="{% static 'assets/img/hero-bg.jpg' %}" alt="">
     <div class="container" data-aos="fade-up" data-aos-delay="100">
       <div class="row justify-content-start">

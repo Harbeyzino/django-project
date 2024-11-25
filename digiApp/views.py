@@ -385,57 +385,43 @@ def edit_profile(request):
 
 
 
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
-from django.http import JsonResponse
-from django.contrib.auth.tokens import default_token_generator
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
+from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.shortcuts import render
-from django.conf import settings
+from django.utils.http import urlsafe_base64_encode
+from django.contrib.auth.tokens import default_token_generator
 
 def custom_password_reset(request):
     if request.method == 'POST':
+        # Get the email from the POST request
         email = request.POST.get('email')
+        
+        # Check if any user exists with this email
+        users = get_user_model().objects.filter(email=email)
 
-        # Check if the email field is empty
-        if not email:
-            return JsonResponse({'error': 'Please provide an email address!'}, status=400)
+        if users.exists():
+            # If multiple users exist with the same email, send a password reset to all of them
+            for user in users:
+                token = default_token_generator.make_token(user)
+                uid = urlsafe_base64_encode(str(user.pk).encode())
+                reset_url = reverse('password_reset_confirm', kwargs={'uidb64': uid, 'token': token})
+                reset_link = request.build_absolute_uri(reset_url)
 
-        try:
-            # Attempt to find a user with the provided email
-            user = User.objects.get(email=email)
+                send_mail(
+                    'Password Reset Request',
+                    f'Click the link below to reset your password:\n\n{reset_link}',
+                    'noreply@yourdomain.com',
+                    [email],
+                    fail_silently=False,
+                )
 
-            # Generate the password reset link
-            uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
-            token = default_token_generator.make_token(user)
-            reset_link = request.build_absolute_uri(
-                reverse('password_reset_confirm', kwargs={'uidb64': uidb64, 'token': token})
-            )
+            # After sending the email, render the reset done page
+            return render(request, 'digiApp/security/password_reset_done.html')
 
-            # Send the password reset email
-            send_mail(
-                subject='Password Reset Request',
-                message=(
-                    f'Hi {user.username},\n\n'
-                    f'Click the link below to reset your password:\n{reset_link}\n\n'
-                    f'If you didn\'t request this, please ignore this email.'
-                ),
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[email],
-                fail_silently=False,
-            )
+        # If no users are found with the provided email, you could display an error
+        else:
+            # You can add a message to the template or handle it as needed
+            return render(request, 'security/password_reset.html', {'error': 'No user found with this email.'})
 
-            return JsonResponse({'success': 'Password reset email has been sent!'})
-
-        except User.DoesNotExist:
-            # Handle case where no user exists with the provided email
-            return JsonResponse({'error': 'No user found with this email address!'}, status=404)
-
-        except Exception as e:
-            # Handle unexpected errors
-            return JsonResponse({'error': f'An error occurred: {str(e)}'}, status=500)
-
-    # Render the password reset template for GET requests
-    return render(request, 'digiApp/security/custom_password_reset.html')
+    return render(request, 'digiApp/security/password_reset.html')
