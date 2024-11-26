@@ -171,12 +171,11 @@ DATABASES = {
 """
 
 
-# Render PostgreSQL database (live)
-
+from decouple import config
 import dj_database_url
 
+# Get the database URL from .env file
 DATABASES = {
-    
-    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
-
+    'default': dj_database_url.config(default=config('DATABASE_URL'))
 }
+
