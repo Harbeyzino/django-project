@@ -18,12 +18,9 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-import environ
+from dotenv import load_dotenv
 
-
-env = environ.Env()
-
-environ.Env.read_env()
+load_dotenv()
 
 
  
@@ -34,7 +31,7 @@ environ.Env.read_env()
 SECRET_KEY = 'django-insecure-^k%5@&&emff8*-*5qrq&xb-zp&lc*$pdg^jeneo&w+%qx!#zq8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -153,8 +150,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'qualitygradedigital@gmail.com'
-EMAIL_HOST_PASSWORD = 'nwzaqczbtdojrjoz'         
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')         
 EMAIL_PORT = 465
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
@@ -180,6 +177,6 @@ import dj_database_url
 
 DATABASES = {
     
-    'default': dj_database_url.parse(env('DATABASE_URL'))
+    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
 
 }
