@@ -20,7 +20,7 @@ from datetime import datetime
 
 
 # Functionality to render the product view page
-@login_required
+@login_required(login_url='/security/sign_in/')
 @allowed_users(allowed_roles=['admin'])
 def products(request):
     # Logic to retrieve and display products

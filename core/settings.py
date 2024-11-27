@@ -137,7 +137,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-LOGIN_URL = '/security/sign_in/'  # Path to your login page
+LOGIN_URL = '/security/sign_in/'
 
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -170,12 +170,39 @@ DATABASES = {
 
 """
 
+  ############## LIVE postgreSQL DATABASE ####################
+
+
 
 from decouple import config
 import dj_database_url
 
-# Get the database URL from .env file
+# Get the database URL from the environment variable
+DATABASE_URL = config('DATABASE_URL')
+
 DATABASES = {
-    'default': dj_database_url.config(default=config('DATABASE_URL'))
+    'default': dj_database_url.parse(DATABASE_URL),
 }
+
+
+
+
+
+
+#################### postgreSQL DATABASE ######################
+
+"""
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'testdb',
+        'USER': 'postgres',
+        'PASSWORD': 'olaniyan52',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
+
+"""
 

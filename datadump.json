@@ -1,0 +1,147 @@
+[
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2024-11-27T12:58:08.028Z",
+    "user": 2,
+    "content_type": 3,
+    "object_id": "1",
+    "object_repr": "admin",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2024-11-27T12:58:19.757Z",
+    "user": 2,
+    "content_type": 3,
+    "object_id": "2",
+    "object_repr": "customer",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2024-11-27T12:58:52.202Z",
+    "user": 2,
+    "content_type": 4,
+    "object_id": "2",
+    "object_repr": "Abyte",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Groups\"]}}]"
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 1,
+  "fields": {
+    "name": "admin",
+    "permissions": []
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 2,
+  "fields": {
+    "name": "customer",
+    "permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$s9V3x6ffNEcLpD0XtAWtSt$YpopG3Au6bfKjQf2Pyjxb1wT2/wFwqLP0OJzAB0x9bk=",
+    "last_login": "2024-11-27T12:59:26.603Z",
+    "is_superuser": false,
+    "username": "Mikky",
+    "first_name": "oso",
+    "last_name": "micheal",
+    "email": "bayo51@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2024-11-27T12:53:40.558Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$e1kZoweCc2xFp6HEZG4ABa$r9uVRm3VDTU82jMuOznDU6urqGzWtC7cLGN7Ew+OC0M=",
+    "last_login": "2024-11-27T13:01:46.027Z",
+    "is_superuser": true,
+    "username": "Abyte",
+    "first_name": "",
+    "last_name": "",
+    "email": "abbeyzino51@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2024-11-27T12:55:14Z",
+    "groups": [
+      1
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "gsnyhg8c7yk5e3n1tg9el1ixhbczwabs",
+  "fields": {
+    "session_data": ".eJxVj8tuwjAQRX_F9RpFzcNAWJJ1RRcsIyF7PG5cjF350RQh_r0OiSq6PffOmZkbPfEUh1MK6E9a0h2t6OqZCQ5ntFMgP7n9cAU4G70WxVQpljQUb06i2S_df4KBhyFPNy2uAdesrGW5eWUNZ8hLKeqmVW0DbJvJlm2AtW3VqLKuUIgGxUbxqmWiXEOWhhExanXNtltPw-DGzlml_WWfYnS2pzsSfcIV6WnUF_QTsMmYCXBj3HhIMWiJndFwnkLFTXjU4dlzxJ84pT095NbD9keOA5Iv72SCSPJjRCBaEhIAhqDyqisBjzyiJNxKEvg3ymJ2aJgvzIfP9UWto8GZvy_ebja89PRO77-lZYsh:1tGHh2:NpNMI3FEexZQliO5FeS0I3hqZi9_4BQ_4031tfnSA90",
+    "expire_date": "2024-12-11T13:02:56.620Z"
+  }
+},
+{
+  "model": "digiApp.product",
+  "pk": 1,
+  "fields": {
+    "title": "hAVXVB",
+    "description": "",
+    "price": "222.00",
+    "affiliate_link": "",
+    "is_approved": true,
+    "created_at": "2024-11-27T13:02:56.547Z",
+    "updated_at": "2024-11-27T13:02:56.578Z",
+    "image": "products/result__1___1_-removebg-preview.png"
+  }
+},
+{
+  "model": "digiApp.profile",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "phone_number": null,
+    "profile_picture": "",
+    "address": null,
+    "company": null,
+    "country": null,
+    "role": null,
+    "about": null,
+    "full_name": null
+  }
+},
+{
+  "model": "digiApp.profile",
+  "pk": 2,
+  "fields": {
+    "user": 2,
+    "phone_number": null,
+    "profile_picture": "",
+    "address": null,
+    "company": null,
+    "country": null,
+    "role": null,
+    "about": null,
+    "full_name": null
+  }
+}
+]

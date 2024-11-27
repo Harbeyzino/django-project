@@ -11,7 +11,6 @@ urlpatterns = [
     path('product/', views.products, name='app.view_products' ),
 
     
-
     path('create_product/', views.createProduct, name='app.create_product' ),
     path('store_product/', views.storeProduct, name='app.store_product' ),
     path('edit_product/<int:id>', views.editProduct, name='app.edit_product' ),
@@ -34,7 +33,7 @@ urlpatterns = [
     path('security/login/', views.logIn, name='security.login'),
     path('security/singout/', views.signOut, name='security.signout'),
     
-    path('no_permission/', views.no_permission, name='no_permission'),
+    path('no_permission/', views.no_permission, name='app.no_permission'),
 
     ## Path for myadmin
     path('myadmin_portal/', views.adminHome, name="app.admin")

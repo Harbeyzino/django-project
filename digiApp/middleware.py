@@ -11,26 +11,32 @@ class RoleBasedAccessMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        # Check if the user is authenticated
+        # If the user is authenticated
         if request.user.is_authenticated:
-            # Handle admin and regular user redirection
-            if request.path.startswith('/admin-portal/') and not request.user.is_staff:
-                # If a regular user tries to access an admin page, redirect them to the home page
-                return redirect('app.homepg')
-            elif request.path.startswith('/product/') and request.user.is_staff:
-                # If an admin user tries to access a regular user page, redirect them to the admin home page
-                return redirect('app.adminHome')
+            # Handle redirection based on user roles
+
+            # Allow admins to access the product page
+            if request.path.startswith('/product/') and request.user.is_staff:
+                return self.get_response(request)
+
+            # Regular user trying to access the product page -> redirect to the appropriate page
+            elif request.path.startswith('/product/') and not request.user.is_staff:
+                return redirect('app.no_permission')  # Change this if needed
+
+            # Regular user trying to access the admin portal -> redirect to the no permission page
+            elif request.path.startswith('/myadmin_portal/') and not request.user.is_staff:
+                return redirect('app.no_permission')  # Redirect to the no_permission page
 
         else:
             # If the user is not authenticated and trying to access protected pages
             protected_paths = [
-                '/admin-portal/',  # Add all paths that require authentication
-                '/product/',
-                '/create-product/'
+                '/myadmin_portal/',  # Admin portal
+                '/product/',  # Product pages
+                '/create_product/',  # Create product page
             ]
             if any(request.path.startswith(path) for path in protected_paths):
-                return redirect(settings.LOGIN_URL)
+                return redirect(settings.LOGIN_URL)  # Redirect to login page if not authenticated
 
-        # Continue processing the request
+        # Continue processing the request if none of the conditions apply
         response = self.get_response(request)
         return response
