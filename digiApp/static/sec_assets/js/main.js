@@ -14,3 +14,19 @@
       }
   });
 })(jQuery);
+
+
+
+
+window.onload = function() {
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(function(alert) {
+        setTimeout(function() {
+            alert.style.opacity = 0;
+            alert.style.transition = "opacity 1s ease-in-out";
+        }, 5000);
+    });
+};
+
+
+

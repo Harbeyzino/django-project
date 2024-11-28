@@ -1,7 +1,6 @@
 {% extends 'digiApp/security/base/sec-app.html' %}
 {% load static %}
 
-
 {% block content %}
     <section class="signup">
         <div class="container">
@@ -10,56 +9,77 @@
                     {% csrf_token %}
                     <h2 class="form-title">Create Account</h2>
 
+                    <!-- First Name Field -->
                     <div class="form-group mb-3">
                         <label for="fname" class="form-label">First Name <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="fname" id="fname" required>
+                        <small id="fname-feedback" class="text-danger"></small>
                     </div>
 
+                    <!-- Last Name Field -->
                     <div class="form-group mb-3">
                         <label for="lname" class="form-label">Last Name <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="lname" id="lname" required>
+                        <small id="lname-feedback" class="text-danger"></small>
                     </div>
 
+                    <!-- Username Field -->
                     <div class="form-group mb-3">
                         <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="username" id="username" required>
+                        <small id="username-feedback" class="text-danger"></small>
                     </div>
 
+                    <!-- Email Field -->
                     <div class="form-group mb-3">
                         <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
                         <input type="email" class="form-control" name="email" id="email" required>
+                        <small id="email-feedback" class="text-danger"></small>
                     </div>
 
+                    <!-- Password Field -->
                     <div class="form-group mb-3">
                         <label for="password1" class="form-label">Password <span class="text-danger">*</span></label>
                         <input type="password" class="form-control" name="password1" id="password1" required>
+                        <small id="password1-feedback" class="text-danger"></small>
+
+                        <!-- Password Instructions -->
+                        <div class="password-instructions">
+                            <p>Your password must have:</p>
+                            <ul>
+                                <li style="color: black;"><span id="length-icon">❌</span> At least 10 characters</li>
+                                <li><span id="uppercase-icon">❌</span> Uppercase and lowercase letters</li>
+                                <li><span id="number-icon">❌</span> Numbers</li>
+                                <li><span id="special-icon">❌</span> At least one special character (e.g., @, #, ?)</li>
+                            </ul>
+                        </div>
                     </div>
 
+                    <!-- Confirm Password Field -->
                     <div class="form-group mb-3">
                         <label for="password2" class="form-label">Repeat Password <span class="text-danger">*</span></label>
                         <input type="password" class="form-control" name="password2" id="password2" required>
+                        <small id="password2-feedback" class="text-danger"></small>
                     </div>
 
+                    <!-- Terms and Conditions -->
                     <div class="form-group mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" name="agree-term" id="agree-term" required>
+                        <input type="checkbox" class="form-check-input" name="agree-term" id="agree-term">
                         <label for="agree-term" class="form-check-label">
                             I agree to all statements in the <a href="#" class="text-decoration-none">Terms of Service</a>
-                            <span class="text-danger"></span>
                         </label>
+                        <small id="agree-term-feedback" class="text-danger"></small>
                     </div>
 
+                    <!-- Submit Button -->
                     <div class="form-group">
-                        <input type="submit" name="submit" id="submit" class="form-submit" />
+                        <input type="submit" name="submit" id="submit" class="form-submit" value="Sign Up" />
                     </div>
                 </form>
 
                 <p class="loginhere">
                     Already have an account? <a href="{% url 'security.login' %}" class="text-decoration-none">Login here</a>
                 </p>
-
-                <div class="text-center mt-3">
-                    <a href="#" class="text-decoration-none">Forgot your password?</a>
-                </div>
             </div>
         </div>
     </section>

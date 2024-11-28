@@ -188,6 +188,8 @@ User Authentication system
 def signUp(request):
     return render(request, 'digiApp/security/signup.html')
 
+from django.conf import settings
+
 # Register functionality to save user in DB
 @unauthenticated_user
 def register(request):
@@ -220,7 +222,15 @@ def register(request):
             group = Group.objects.get(name='customer')
             newUser.groups.add(group)
 
-            # Don't log the user in, just show success message
+            # Send success email
+            subject = 'Registration Successful  Welcome to Qaulity Grade Digitals'
+            message = f'Thank you for registering, {fname}! Your account has been successfully created.'
+            from_email = settings.DEFAULT_FROM_EMAIL
+            recipient_list = [email]
+
+            send_mail(subject, message, from_email, recipient_list)
+
+            # Show success message to user
             messages.success(request, "Registration successful! Please log in to continue.")
             return redirect('security.login')  # Redirect to the login page
 
@@ -229,6 +239,7 @@ def register(request):
             return redirect('security.register')
 
     return render(request, 'digiApp/security/signup.html')
+
 
 # Sign-in view: renders the login form
 @unauthenticated_user
@@ -425,3 +436,16 @@ def custom_password_reset(request):
             return render(request, 'security/password_reset.html', {'error': 'No user found with this email.'})
 
     return render(request, 'digiApp/security/password_reset.html')
+
+
+
+from django.contrib.auth.views import PasswordResetConfirmView
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'digiApp/security/password_reset_confirm.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['uidb64'] = self.kwargs['uidb64']
+        context['token'] = self.kwargs['token']
+        return context
