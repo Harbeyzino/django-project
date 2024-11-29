@@ -3,7 +3,7 @@ from . import views
 from django.conf import settings  
 from django.conf.urls.static import static 
 from django.contrib.auth import views as auth_views
-# from .views import CustomPasswordResetConfirmView
+from .views import CustomPasswordResetCompleteView
 
 
 urlpatterns = [
@@ -32,9 +32,7 @@ urlpatterns = [
         name='password_reset_confirm'
     ),
 
-    path('reset/done/',
-          auth_views.PasswordResetCompleteView.as_view(template_name='digiApp/security/password_reset_complete.html'),
-         name='password_reset_complete'),
+    path('reset/done/', CustomPasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
     ## Security Path 
 

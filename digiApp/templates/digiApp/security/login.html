@@ -4,11 +4,22 @@
 {% block content %}
 <section class="signup">
     <!-- <img src="{% static 'sec_assets/images/signup-bg.jpg' %}" alt=""> -->
-    <div class="container">
+    <div class="container-fluid">
         <div class="signup-content">
+            <h2 class="form-title">LOG IN</h2>
+            <!-- Social Authentication (Google and Facebook) -->
+            <div class="form-group mb-3">
+                <a href="" class="btn btn-danger w-100">
+                    <i class="bi bi-google"></i> Sign up with Google
+                </a>
+                <a href="" class="btn btn-primary w-100 mt-2">
+                    <i class="bi bi-facebook"></i> Sign up with Facebook
+                </a>
+            </div>
+            <hr />
+            <p>Or sign up using:</p>
             <form method="POST" action="{% url 'security.login' %}" enctype="multipart/form-data" id="signup-form" class="signup-form" >
                 {% csrf_token %}
-                <h2 class="form-title">LOG IN</h2>
 
                 <div class="form-group">
                     <input type="text" class="form-input" name="username" id="username" placeholder="Username"/>

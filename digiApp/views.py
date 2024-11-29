@@ -393,16 +393,6 @@ def edit_profile(request):
 
 
 
-
-
-
-from django.contrib.auth import get_user_model
-from django.core.mail import send_mail
-from django.shortcuts import render, redirect
-from django.urls import reverse
-from django.utils.http import urlsafe_base64_encode
-from django.contrib.auth.tokens import default_token_generator
-
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth import get_user_model
 from django.urls import reverse
@@ -448,3 +438,36 @@ def custom_password_reset(request):
     return render(request, 'digiApp/security/password_reset.html')
 
 
+# views.py
+from django.contrib.auth.views import PasswordResetCompleteView
+from django.core.mail import send_mail
+from django.conf import settings
+from django.shortcuts import render
+from django.contrib.auth.models import User
+
+class CustomPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = 'digiApp/security/password_reset_complete.html'
+
+    def form_valid(self, form):
+        # Call the parent method to ensure the default behavior
+        response = super().form_valid(form)
+
+        # Retrieve the user who has reset their password (via email confirmation)
+        user = self.request.user  # The logged-in user who reset their password
+
+        # Send a custom email after password reset with the new password
+        if user:
+            new_password = form.cleaned_data.get('new_password1')
+
+            # Make sure the new password exists before sending it
+            if new_password:
+                send_mail(
+                    'Your Password Has Been Reset',
+                    f'Hello {user.username},\n\nYour password has been successfully reset. '
+                    f'Your new password is: {new_password}\n\nPlease keep this information secure.',
+                    settings.EMAIL_HOST_USER,
+                    [user.email],
+                    fail_silently=False,
+                )
+
+        return response
