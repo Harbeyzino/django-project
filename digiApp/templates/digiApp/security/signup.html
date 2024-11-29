@@ -14,6 +14,9 @@
                         <label for="fname" class="form-label">First Name <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="fname" id="fname" required>
                         <small id="fname-feedback" class="text-danger"></small>
+                        <div id="fname-instructions" class="field-instructions" style="display: none;">
+                            <p>First name must be at least 2 characters long.</p>
+                        </div>
                     </div>
 
                     <!-- Last Name Field -->
@@ -21,6 +24,9 @@
                         <label for="lname" class="form-label">Last Name <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="lname" id="lname" required>
                         <small id="lname-feedback" class="text-danger"></small>
+                        <div id="lname-instructions" class="field-instructions" style="display: none;">
+                            <p>Last name must be at least 2 characters long.</p>
+                        </div>
                     </div>
 
                     <!-- Username Field -->
@@ -28,6 +34,9 @@
                         <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="username" id="username" required>
                         <small id="username-feedback" class="text-danger"></small>
+                        <div id="username-instructions" class="field-instructions" style="display: none;">
+                            <p>Username must be at least 3 characters long.</p>
+                        </div>
                     </div>
 
                     <!-- Email Field -->
@@ -35,6 +44,9 @@
                         <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
                         <input type="email" class="form-control" name="email" id="email" required>
                         <small id="email-feedback" class="text-danger"></small>
+                        <div id="email-instructions" class="field-instructions" style="display: none;">
+                            <p>Please enter a valid email address.</p>
+                        </div>
                     </div>
 
                     <!-- Password Field -->
@@ -44,10 +56,10 @@
                         <small id="password1-feedback" class="text-danger"></small>
 
                         <!-- Password Instructions -->
-                        <div class="password-instructions">
+                        <div id="password1-instructions" class="field-instructions" style="display: none;">
                             <p>Your password must have:</p>
                             <ul>
-                                <li style="color: black;"><span id="length-icon">❌</span> At least 10 characters</li>
+                                <li><span id="length-icon">❌</span> At least 10 characters</li>
                                 <li><span id="uppercase-icon">❌</span> Uppercase and lowercase letters</li>
                                 <li><span id="number-icon">❌</span> Numbers</li>
                                 <li><span id="special-icon">❌</span> At least one special character (e.g., @, #, ?)</li>
@@ -60,6 +72,9 @@
                         <label for="password2" class="form-label">Repeat Password <span class="text-danger">*</span></label>
                         <input type="password" class="form-control" name="password2" id="password2" required>
                         <small id="password2-feedback" class="text-danger"></small>
+                        <div id="password2-instructions" class="field-instructions" style="display: none;">
+                            <p>Passwords must match.</p>
+                        </div>
                     </div>
 
                     <!-- Terms and Conditions -->
@@ -83,4 +98,5 @@
             </div>
         </div>
     </section>
+
 {% endblock %}

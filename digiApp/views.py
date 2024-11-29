@@ -403,6 +403,13 @@ from django.urls import reverse
 from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.tokens import default_token_generator
 
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth import get_user_model
+from django.urls import reverse
+from django.utils.http import urlsafe_base64_encode
+from django.core.mail import send_mail
+from django.shortcuts import render, redirect
+
 def custom_password_reset(request):
     if request.method == 'POST':
         # Get the email from the POST request
@@ -427,25 +434,17 @@ def custom_password_reset(request):
                     fail_silently=False,
                 )
 
-            # After sending the email, render the reset done page
-            return render(request, 'digiApp/security/password_reset_done.html')
+            # Redirect to the password reset done page after sending the emails
+            return redirect('password_reset_done')
 
-        # If no users are found with the provided email, you could display an error
         else:
-            # You can add a message to the template or handle it as needed
-            return render(request, 'security/password_reset.html', {'error': 'No user found with this email.'})
+            # If no users are found, add a user-friendly message to the context
+            return render(
+                request, 
+                'digiApp/security/password_reset.html', 
+                {'error': 'No account found with this email address. Please try again.'}
+            )
 
     return render(request, 'digiApp/security/password_reset.html')
 
 
-
-from django.contrib.auth.views import PasswordResetConfirmView
-
-class CustomPasswordResetConfirmView(PasswordResetConfirmView):
-    template_name = 'digiApp/security/password_reset_confirm.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['uidb64'] = self.kwargs['uidb64']
-        context['token'] = self.kwargs['token']
-        return context

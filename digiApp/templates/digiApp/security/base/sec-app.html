@@ -121,50 +121,85 @@
         };
 
 
-        // Validate password and update instructions dynamically
-        function validatePassword() {
-            const password = document.getElementById('new_password1').value;
-        
-            // Check for at least 10 characters
-            document.getElementById('length-icon').textContent = password.length >= 10 ? '✅' : '❌';
-        
-            // Check for uppercase and lowercase letters
-            document.getElementById('uppercase-icon').textContent =
-                /[A-Z]/.test(password) && /[a-z]/.test(password) ? '✅' : '❌';
-        
-            // Check for numbers
-            document.getElementById('number-icon').textContent = /\d/.test(password) ? '✅' : '❌';
-        
-            // Check for special characters
-            document.getElementById('special-icon').textContent =
-                /[!@#?$%^&*]/.test(password) ? '✅' : '❌';
-        }
+        // Function to dynamically validate password and update instructions
+function validatePassword() {
+    const password = document.getElementById('new_password1').value;
+    
+    // Check for at least 10 characters
+    document.getElementById('length-icon').textContent = password.length >= 10 ? '✅' : '❌';
 
-        // Check if passwords match and provide feedback
-        function checkPasswordsMatch() {
-            const password1 = document.getElementById('new_password1').value;
-            const password2 = document.getElementById('new_password2').value;
-        
-            const feedback = document.getElementById('confirm-feedback');
-            const submitButton = document.getElementById('submit');
-        
-            if (password1 && password2 && password1 !== password2) {
-                feedback.textContent = 'Passwords do not match.';
-                feedback.style.color = 'red';
-                submitButton.disabled = true; // Disable the submit button
-            } else {
-                feedback.textContent = ''; // Clear the message
-                submitButton.disabled = false; // Enable the submit button if everything is valid
-            }
-        }
+    // Check for uppercase and lowercase letters
+    document.getElementById('uppercase-icon').textContent =
+        /[A-Z]/.test(password) && /[a-z]/.test(password) ? '✅' : '❌';
+
+    // Check for numbers
+    document.getElementById('number-icon').textContent = /\d/.test(password) ? '✅' : '❌';
+
+    // Check for special characters
+    document.getElementById('special-icon').textContent =
+        /[!@#?$%^&*]/.test(password) ? '✅' : '❌';
+}
+
+// Show the password instructions when the user focuses on the password field
+function showPasswordInstructions() {
+    document.getElementById('password-instructions').style.display = 'block';
+}
+
+// Hide the password instructions when the user blurs the password field
+function hidePasswordInstructions() {
+    const passwordField = document.getElementById('new_password1');
+    if (!passwordField.value) {
+        document.getElementById('password-instructions').style.display = 'none';
+    }
+}
+
+// Check if the passwords match and provide feedback
+function checkPasswordsMatch() {
+    const password1 = document.getElementById('new_password1').value;
+    const password2 = document.getElementById('new_password2').value;
+
+    const feedback = document.getElementById('confirm-feedback');
+    const submitButton = document.getElementById('submit');
+
+    if (password1 && password2 && password1 !== password2) {
+        feedback.textContent = 'Passwords do not match.';
+        feedback.style.color = 'red';
+        submitButton.disabled = true; // Disable the submit button
+    } else {
+        feedback.textContent = ''; // Clear the message
+        submitButton.disabled = false; // Enable the submit button if everything is valid
+    }
+}
+
 
 
 // Sign up Validation
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const signupForm = document.getElementById('signup-form');
+// signup.js
 
-        // Add event listeners for validation
+document.addEventListener('DOMContentLoaded', () => {
+    const signupForm = document.getElementById('signup-form');
+
+    // Add event listeners
+    addEventListeners();
+
+    function addEventListeners() {
+        signupForm.fname.addEventListener('focus', () => showFieldInstructions('fname'));
+        signupForm.lname.addEventListener('focus', () => showFieldInstructions('lname'));
+        signupForm.username.addEventListener('focus', () => showFieldInstructions('username'));
+        signupForm.email.addEventListener('focus', () => showFieldInstructions('email'));
+        signupForm.password1.addEventListener('focus', () => showFieldInstructions('password1'));
+        signupForm.password2.addEventListener('focus', () => showFieldInstructions('password2'));
+
+        // Hide instructions on input
+        signupForm.fname.addEventListener('input', () => hideFieldInstructions('fname'));
+        signupForm.lname.addEventListener('input', () => hideFieldInstructions('lname'));
+        signupForm.username.addEventListener('input', () => hideFieldInstructions('username'));
+        signupForm.email.addEventListener('input', () => hideFieldInstructions('email'));
+        signupForm.password1.addEventListener('input', () => hideFieldInstructions('password1'));
+        signupForm.password2.addEventListener('input', () => hideFieldInstructions('password2'));
+
+        // Add input validation
         signupForm.fname.addEventListener('input', () => validateName('fname'));
         signupForm.lname.addEventListener('input', () => validateName('lname'));
         signupForm.username.addEventListener('input', validateUsername);
@@ -173,119 +208,111 @@
         signupForm.password2.addEventListener('input', checkPasswordsMatch);
         signupForm['agree-term'].addEventListener('change', validateTerms);
         signupForm.addEventListener('submit', handleSubmit);
+    }
 
-        // Validate Name
-        function validateName(fieldId) {
-            const field = signupForm[fieldId];
-            const feedback = document.getElementById(`${fieldId}-feedback`);
-            if (field.value.trim().length < 2) {
-                feedback.textContent = 'Name must be at least 2 characters long.';
-            } else {
-                feedback.textContent = '';
-            }
+    // Show field instructions
+    function showFieldInstructions(fieldId) {
+        document.getElementById(`${fieldId}-instructions`).style.display = 'block';
+    }
+
+    // Hide field instructions
+    function hideFieldInstructions(fieldId) {
+        document.getElementById(`${fieldId}-instructions`).style.display = 'none';
+    }
+
+    // Validate Name
+    function validateName(fieldId) {
+        const field = signupForm[fieldId];
+        const feedback = document.getElementById(`${fieldId}-feedback`);
+        if (field.value.trim().length < 2) {
+            feedback.textContent = 'Name must be at least 2 characters long.';
+        } else {
+            feedback.textContent = '';
         }
+    }
 
-        // Validate Username
-        function validateUsername() {
-            const username = signupForm.username.value;
-            const feedback = document.getElementById('username-feedback');
-            if (username.trim().length < 3) {
-                feedback.textContent = 'Username must be at least 3 characters long.';
-            } else {
-                feedback.textContent = '';
-            }
+    // Validate Username
+    function validateUsername() {
+        const username = signupForm.username.value;
+        const feedback = document.getElementById('username-feedback');
+        if (username.trim().length < 3) {
+            feedback.textContent = 'Username must be at least 3 characters long.';
+        } else {
+            feedback.textContent = '';
         }
+    }
 
-        // Validate Email
-        function validateEmail() {
-            const email = signupForm.email.value;
-            const feedback = document.getElementById('email-feedback');
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                feedback.textContent = 'Please enter a valid email address.';
-            } else {
-                feedback.textContent = '';
-            }
+    // Validate Email
+    function validateEmail() {
+        const email = signupForm.email.value;
+        const feedback = document.getElementById('email-feedback');
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            feedback.textContent = 'Please enter a valid email address.';
+        } else {
+            feedback.textContent = '';
         }
+    }
 
-        // Validate Password
-        function validatePassword() {
-            const password = signupForm.password1.value;
-            const feedback = document.getElementById('password1-feedback');
-            const lengthValid = password.length >= 10;
-            const uppercaseValid = /[A-Z]/.test(password);
-            const numberValid = /\d/.test(password);
-            const specialValid = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    // Validate Password
+    function validatePassword() {
+        const password = signupForm.password1.value;
+        const feedback = document.getElementById('password1-feedback');
+        const lengthValid = password.length >= 10;
+        const uppercaseValid = /[A-Z]/.test(password);
+        const numberValid = /\d/.test(password);
+        const specialValid = /[!@#$%^&*(),.?":{}|<>]/.test(password);
 
-            // Check for each condition
-            if (!lengthValid) {
-                document.getElementById('length-icon').textContent = '❌';
-            } else {
-                document.getElementById('length-icon').textContent = '✔️';
-            }
-            if (!uppercaseValid) {
-                document.getElementById('uppercase-icon').textContent = '❌';
-            } else {
-                document.getElementById('uppercase-icon').textContent = '✔️';
-            }
-            if (!numberValid) {
-                document.getElementById('number-icon').textContent = '❌';
-            } else {
-                document.getElementById('number-icon').textContent = '✔️';
-            }
-            if (!specialValid) {
-                document.getElementById('special-icon').textContent = '❌';
-            } else {
-                document.getElementById('special-icon').textContent = '✔️';
-            }
+        // Check for each condition
+        togglePasswordValidationIcons(lengthValid, uppercaseValid, numberValid, specialValid);
 
-            if (!lengthValid || !uppercaseValid || !numberValid || !specialValid) {
-                feedback.textContent = 'Password does not meet the required criteria.';
-            } else {
-                feedback.textContent = '';
-            }
+        if (lengthValid && uppercaseValid && numberValid && specialValid) {
+            feedback.textContent = '';
+        } else {
+            feedback.textContent = 'Password must meet all requirements.';
         }
+    }
 
-        // Check Passwords Match
-        function checkPasswordsMatch() {
-            const password1 = signupForm.password1.value;
-            const password2 = signupForm.password2.value;
-            const feedback = document.getElementById('password2-feedback');
-            if (password1 !== password2) {
-                feedback.textContent = 'Passwords do not match.';
-            } else {
-                feedback.textContent = '';
-            }
+    // Toggle password validation icons
+    function togglePasswordValidationIcons(lengthValid, uppercaseValid, numberValid, specialValid) {
+        document.getElementById('length-icon').textContent = lengthValid ? '✔️' : '❌';
+        document.getElementById('uppercase-icon').textContent = uppercaseValid ? '✔️' : '❌';
+        document.getElementById('number-icon').textContent = numberValid ? '✔️' : '❌';
+        document.getElementById('special-icon').textContent = specialValid ? '✔️' : '❌';
+    }
+
+    // Check Passwords Match
+    function checkPasswordsMatch() {
+        const password1 = signupForm.password1.value;
+        const password2 = signupForm.password2.value;
+        const feedback = document.getElementById('password2-feedback');
+        if (password1 !== password2) {
+            feedback.textContent = 'Passwords do not match.';
+        } else {
+            feedback.textContent = '';
         }
+    }
 
-        // Validate Terms Agreement
-        // function validateTerms() {
-        //     const feedback = document.getElementById('agree-term-feedback');
-        //     if (!signupForm['agree-term'].checked) {
-        //         feedback.textContent = 'You must agree to the terms and conditions.';
-        //     } else {
-        //         feedback.textContent = '';
-        //     }
-        // }
-
-        // Handle Form Submit (Prevent if validation fails)
-        function handleSubmit(event) {
-            // Validate all fields before submitting
-            validateName('fname');
-            validateName('lname');
-            validateUsername();
-            validateEmail();
-            validatePassword();
-            checkPasswordsMatch();
-            validateTerms();
-
-            // Prevent form submission if there are validation errors
-            if (signupForm.querySelector('.text-danger') || signupForm.querySelector('.feedback').textContent) {
-                event.preventDefault();
-                alert('Please fix the errors before submitting.');
-            }
+    // Validate Terms
+    function validateTerms() {
+        const feedback = document.getElementById('agree-term-feedback');
+        if (!signupForm['agree-term'].checked) {
+            feedback.textContent = 'You must agree to the terms and conditions.';
+        } else {
+            feedback.textContent = '';
         }
-    });
+    }
+
+    // Handle Submit
+    function handleSubmit(event) {
+        const isValid = [...signupForm.elements].every((input) => input.checkValidity());
+        if (!isValid) {
+            event.preventDefault();
+            alert('Please fill in all the fields correctly.');
+        }
+    }
+});
+
 
 
 
