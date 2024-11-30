@@ -367,6 +367,34 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+    // Toggle visibility for password fields
+    document.getElementById("toggle-password1").addEventListener("click", function() {
+        const passwordField = document.getElementById("new_password1");
+        const eyeIcon = document.getElementById("eye-icon1");
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            eyeIcon.classList.remove("bi-eye");
+            eyeIcon.classList.add("bi-eye-slash");
+        } else {
+            passwordField.type = "password";
+            eyeIcon.classList.remove("bi-eye-slash");
+            eyeIcon.classList.add("bi-eye");
+        }
+    });
+
+    document.getElementById("toggle-password2").addEventListener("click", function() {
+        const passwordField = document.getElementById("new_password2");
+        const eyeIcon = document.getElementById("eye-icon2");
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            eyeIcon.classList.remove("bi-eye");
+            eyeIcon.classList.add("bi-eye-slash");
+        } else {
+            passwordField.type = "password";
+            eyeIcon.classList.remove("bi-eye-slash");
+            eyeIcon.classList.add("bi-eye");
+        }
+    });
 
 
     </script>

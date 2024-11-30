@@ -50,8 +50,6 @@ urlpatterns = [
     path('myadmin_portal/', views.adminHome, name="app.admin")
 
 
-    
-  
 ]
 
 if settings.DEBUG:  

@@ -188,14 +188,13 @@ User Authentication system
 def signUp(request):
     return render(request, 'digiApp/security/signup.html')
 
-from django.conf import settings
+
+from django.core.mail import EmailMessage
 
 # Register functionality to save user in DB
 @unauthenticated_user
 def register(request):
     if request.method == 'POST':
-        fname = request.POST.get('fname')
-        lname = request.POST.get('lname')
         username = request.POST.get('username')
         email = request.POST.get('email')
         pass1 = request.POST.get('password1')
@@ -214,31 +213,107 @@ def register(request):
         if pass1 == pass2:
             # Create user and save to DB
             newUser = User.objects.create_user(username=username, email=email, password=pass1)
-            newUser.first_name = fname
-            newUser.last_name = lname
             newUser.save()
 
             # Add the new user to the 'customer' group
             group = Group.objects.get(name='customer')
             newUser.groups.add(group)
 
-            # Send success email
-            subject = 'Registration Successful  Welcome to Qaulity Grade Digitals'
-            message = f'Thank you for registering, {fname}! Your account has been successfully created.'
-            from_email = settings.DEFAULT_FROM_EMAIL
-            recipient_list = [email]
+            # Prepare HTML email content
+            subject = '🎉 Welcome to Quality Grade Digital!'
+            html_message = f"""
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <style>
+                    body {{
+                        font-family: Arial, sans-serif;
+                        line-height: 1.6;
+                        color: #333;
+                        background-color: #f9f9f9;
+                        margin: 0;
+                        padding: 0;
+                    }}
+                    .email-container {{
+                        max-width: 600px;
+                        margin: 20px auto;
+                        padding: 20px;
+                        background-color: #ffffff;
+                        border: 1px solid #ddd;
+                        border-radius: 5px;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    }}
+                    h1 {{
+                        color: #0073e6;
+                        text-align: center;
+                    }}
+                    p {{
+                        font-size: 16px;
+                    }}
+                    .cta {{
+                        text-align: center;
+                        margin: 20px 0;
+                    }}
+                    .cta a {{
+                        display: inline-block;
+                        padding: 10px 20px;
+                        background-color: #0073e6;
+                        color: white;
+                        text-decoration: none;
+                        border-radius: 5px;
+                        font-weight: bold;
+                    }}
+                    .cta a:hover {{
+                        background-color: #005bb5;
+                    }}
+                    .footer {{
+                        text-align: center;
+                        margin-top: 20px;
+                        font-size: 12px;
+                        color: #888;
+                    }}
+                </style>
+            </head>
+            <body>
+                <div class="email-container">
+                    <h1>🎉 Welcome to Quality Grade Digitals!</h1>
+                    <p>Hi <strong>{username}</strong>,</p>
+                    <p>Thank you for joining <strong>Quality Grade Digitals</strong>. We're thrilled to have you on board!</p>
+                    <p>Here's what you can do next:</p>
+                    <ul>
+                        <li>Log in to your account to explore our platform.</li>
+                        <li>Take advantage of our tools and resources to get started.</li>
+                    </ul>
+                    <div class="cta">
+                        <a href="https://yourwebsite.com/login" target="_blank">Log in to your account</a>
+                    </div>
+                    <p>If you have any questions, feel free to reach out to our support team. We're here to help!</p>
+                    <p>Welcome aboard, and let's achieve great things together!</p>
+                    <p>Cheers,<br>The Quality Grade Digital Team</p>
+                    <div class="footer">
+                        &copy; {datetime.now().year} Quality Grade Digital. All rights reserved.
+                    </div>
+                </div>
+            </body>
+            </html>
+            """
 
-            send_mail(subject, message, from_email, recipient_list)
+            # Use a custom sender email and name
+            from_email = 'Quality Grade Digital <no-reply@qualitygrade.com>'  # Custom "from" email and name
+            email = EmailMessage(subject, html_message, from_email, [email])
+            email.content_subtype = "html"  # Set the content type to HTML
+            email.send()
 
             # Show success message to user
             messages.success(request, "Registration successful! Please log in to continue.")
-            return redirect('security.login')  # Redirect to the login page
+            return redirect('password_reset_complete')  # Redirect to the password reset complete page
 
         else:
             messages.warning(request, "Passwords do not match.")
             return redirect('security.register')
 
     return render(request, 'digiApp/security/signup.html')
+
 
 
 # Sign-in view: renders the login form
@@ -324,7 +399,7 @@ def profile_page(request):
     
     profile.refresh_from_db()
 
-    if request.method == "POST" and request.is_ajax():  # Handle AJAX request
+    if request.method == "POST":
         profile.full_name = request.POST.get("full_name", profile.full_name)
         profile.about = request.POST.get("about", profile.about)
         profile.company = request.POST.get("company", profile.company)
@@ -393,11 +468,14 @@ def edit_profile(request):
 
 
 
-from django.contrib.auth.tokens import default_token_generator
+
+from django.core.mail import send_mail
+from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib import messages
 from django.urls import reverse
 from django.utils.http import urlsafe_base64_encode
-from django.core.mail import send_mail
+from django.contrib.auth.tokens import default_token_generator
 from django.shortcuts import render, redirect
 
 def custom_password_reset(request):
@@ -416,20 +494,82 @@ def custom_password_reset(request):
                 reset_url = reverse('password_reset_confirm', kwargs={'uidb64': uid, 'token': token})
                 reset_link = request.build_absolute_uri(reset_url)
 
+                # Prepare the HTML email content
+                html_message = f"""
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <style>
+                            body {{
+                                font-family: Arial, sans-serif;
+                                color: #333;
+                                background-color: #f9f9f9;
+                                padding: 20px;
+                            }}
+                            .email-container {{
+                                background-color: #ffffff;
+                                padding: 20px;
+                                border-radius: 8px;
+                                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                            }}
+                            h1 {{
+                                color: #0073e6;
+                                text-align: center;
+                            }}
+                            p {{
+                                font-size: 16px;
+                            }}
+                            .cta-button {{
+                                display: inline-block;
+                                padding: 12px 25px;
+                                background-color: #0073e6;
+                                color: white;
+                                text-decoration: none;
+                                border-radius: 5px;
+                                font-weight: bold;
+                                margin-top: 20px;
+                            }}
+                            .cta-button:hover {{
+                                background-color: #005bb5;
+                            }}
+                            .footer {{
+                                text-align: center;
+                                font-size: 12px;
+                                color: #888;
+                                margin-top: 30px;
+                            }}
+                        </style>
+                    </head>
+                    <body>
+                        <div class="email-container">
+                            <h1>Password Reset Request</h1>
+                            <p>Hello {user.username},</p>
+                            <p>We received a request to reset your password for your Quality Grade Digitals account. If you made this request, please click the button below to reset your password:</p>
+                            <p><a href="{reset_link}" class="cta-button">Reset My Password</a></p>
+                            <p>If you did not request this password reset, please ignore this email.</p>
+                            <div class="footer">
+                                <p>&copy; {datetime.now().year} Quality Grade Digitals. All rights reserved.</p>
+                            </div>
+                        </div>
+                    </body>
+                    </html>
+                """
+
+                # Send email (HTML version)
                 send_mail(
                     'Password Reset Request',
-                    f'Click the link below to reset your password:\n\n{reset_link}',
-                    'noreply@yourdomain.com',
-                    [email],
+                    '',  # Plain text body is not needed when using HTML
+                    'Quality Grade Digital <no-reply@qualitygrade.com>',  # Custom sender name and email
+                    [email],  # Recipient email address
                     fail_silently=False,
+                    html_message=html_message  # HTML message
                 )
 
             # Redirect to the password reset done page after sending the emails
             return redirect('password_reset_done')
 
-        # If no users are found
         else:
-            # Add an error message using Django's messaging framework
+            # If no users are found
             messages.error(request, 'No account found with this email address. Please try again.')
         
             # Redirect back to the password reset page or render the template again
@@ -439,17 +579,17 @@ def custom_password_reset(request):
 
 
 
-from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
-from django.utils.http import urlsafe_base64_decode
-from django.contrib.auth.tokens import default_token_generator
-from django.contrib import messages
-from django.core.mail import send_mail
-from django.conf import settings
-from django.utils.encoding import force_str
-from django.views import View
-from django.urls import reverse_lazy
 
+
+from django.views import View
+from django.core.mail import send_mail
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.utils.http import urlsafe_base64_decode
+from django.utils.encoding import force_str
+from django.contrib.auth.tokens import default_token_generator
+from django.urls import reverse_lazy
+from .models import User  # Assuming your User model is here
 
 class CustomPasswordResetConfirmView(View):
     template_name = 'digiApp/security/password_reset_confirm.html'
@@ -489,21 +629,86 @@ class CustomPasswordResetConfirmView(View):
                 user.save()
 
                 # HTML email content
-                html_message = f'''<p>Hello {user.username},</p>
-                    <p>We are writing to inform you that your password has been successfully reset.</p>
-                    <p>Your new password is: <strong>{new_password}</strong></p>
-                    <p>Please keep this password secure. If you did not request this password reset, please contact our support team immediately.</p>
-                    <p>Thank you,</p>
-                    <p>Quality Grade Digitals Support Team</p>'''
+                html_message = f'''<html>
+                <head>
+                    <style>
+                        body {{
+                            font-family: Arial, sans-serif;
+                            color: #333;
+                            background-color: #f4f4f4;
+                            padding: 20px;
+                        }}
+                        .email-container {{
+                            max-width: 600px;
+                            margin: 0 auto;
+                            padding: 20px;
+                            background-color: #fff;
+                            border-radius: 8px;
+                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                        }}
+                        .email-header {{
+                            text-align: center;
+                            padding-bottom: 20px;
+                        }}
+                        .email-header h1 {{
+                            color: #0073e6;
+                        }}
+                        .email-body {{
+                            font-size: 16px;
+                            line-height: 1.5;
+                        }}
+                        .cta-button {{
+                            display: inline-block;
+                            padding: 10px 20px;
+                            background-color: #0073e6;
+                            color: white;
+                            text-decoration: none;
+                            border-radius: 5px;
+                            margin-top: 20px;
+                            font-weight: bold;
+                        }}
+                        .cta-button:hover {{
+                            background-color: #005bb5;
+                        }}
+                        .footer {{
+                            font-size: 12px;
+                            text-align: center;
+                            margin-top: 20px;
+                            color: #777;
+                        }}
+                    </style>
+                </head>
+                <body>
+                    <div class="email-container">
+                        <div class="email-header">
+                            <h1>🎉 Your Password Has Been Reset Successfully!</h1>
+                        </div>
+                        <div class="email-body">
+                            <p>Hello <strong>{user.username}</strong>,</p>
+                            <p>We are writing to inform you that your password has been successfully reset.</p>
+                            <p>If you requested this password reset, your new password is:</p>
+                            <p><strong>{new_password}</strong></p>
+                            <p>Please ensure that you store your password securely. If you did not request this password reset or if you have any concerns, please contact our support team immediately.</p>
+                            <p>If you're ready, you can <a href="https://yourwebsite.com/login" class="cta-button">Log in to your account</a> and start using your account with your new password.</p>
+                        </div>
+                        <div class="footer">
+                            <p>Thank you,</p>
+                            <p>The Quality Grade Digitals Team</p>
+                            <p>&copy; {datetime.now().year} Quality Grade Digitals. All rights reserved.</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+                '''
 
-                # Send email (HTML version)
+                # Send the HTML email with a custom "from" name
                 send_mail(
                     'Your Password Has Been Reset',
-                    '',  # Plain text body is not needed when using HTML
-                    settings.EMAIL_HOST_USER,
+                    '',  # No plain text body as we're sending HTML content
+                    'Quality Grade Digitals <no-reply@qualitygrade.com>',  # Custom sender name
                     [user.email],
                     fail_silently=False,
-                    html_message=html_message  # HTML message
+                    html_message=html_message  # HTML content
                 )
 
                 # Redirect to the password reset done page
@@ -517,3 +722,4 @@ class CustomPasswordResetConfirmView(View):
             # If the token is invalid or expired
             messages.error(request, 'The password reset link is invalid or has expired.')
             return render(request, self.template_name, {'valid_link': False})
+
