@@ -427,47 +427,93 @@ def custom_password_reset(request):
             # Redirect to the password reset done page after sending the emails
             return redirect('password_reset_done')
 
+        # If no users are found
         else:
-            # If no users are found, add a user-friendly message to the context
-            return render(
-                request, 
-                'digiApp/security/password_reset.html', 
-                {'error': 'No account found with this email address. Please try again.'}
-            )
-
+            # Add an error message using Django's messaging framework
+            messages.error(request, 'No account found with this email address. Please try again.')
+        
+            # Redirect back to the password reset page or render the template again
+            return render(request, 'digiApp/security/password_reset.html')
+        
     return render(request, 'digiApp/security/password_reset.html')
 
 
-# views.py
-from django.contrib.auth.views import PasswordResetCompleteView
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.utils.http import urlsafe_base64_decode
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
-from django.shortcuts import render
-from django.contrib.auth.models import User
+from django.utils.encoding import force_str
+from django.views import View
+from django.urls import reverse_lazy
 
-class CustomPasswordResetCompleteView(PasswordResetCompleteView):
-    template_name = 'digiApp/security/password_reset_complete.html'
 
-    def form_valid(self, form):
-        # Call the parent method to ensure the default behavior
-        response = super().form_valid(form)
+class CustomPasswordResetConfirmView(View):
+    template_name = 'digiApp/security/password_reset_confirm.html'
 
-        # Retrieve the user who has reset their password (via email confirmation)
-        user = self.request.user  # The logged-in user who reset their password
+    def get(self, request, uidb64, token):
+        try:
+            # Decode user ID from the URL
+            uid = force_str(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
 
-        # Send a custom email after password reset with the new password
-        if user:
-            new_password = form.cleaned_data.get('new_password1')
+        # Check if the token is valid
+        if user and default_token_generator.check_token(user, token):
+            return render(request, self.template_name, {'valid_link': True, 'uidb64': uidb64, 'token': token})
+        else:
+            messages.error(request, 'The password reset link is invalid or has expired.')
+            return render(request, self.template_name, {'valid_link': False})
 
-            # Make sure the new password exists before sending it
-            if new_password:
+    def post(self, request, uidb64, token):
+        try:
+            # Decode user ID from the URL
+            uid = force_str(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+
+        # Check if the token is valid
+        if user and default_token_generator.check_token(user, token):
+            # Get the new password from the form data
+            new_password = request.POST.get('new_password1')
+            confirm_password = request.POST.get('new_password2')
+
+            # Check if the passwords match
+            if new_password and new_password == confirm_password:
+                user.set_password(new_password)
+                user.save()
+
+                # HTML email content
+                html_message = f'''<p>Hello {user.username},</p>
+                    <p>We are writing to inform you that your password has been successfully reset.</p>
+                    <p>Your new password is: <strong>{new_password}</strong></p>
+                    <p>Please keep this password secure. If you did not request this password reset, please contact our support team immediately.</p>
+                    <p>Thank you,</p>
+                    <p>Quality Grade Digitals Support Team</p>'''
+
+                # Send email (HTML version)
                 send_mail(
                     'Your Password Has Been Reset',
-                    f'Hello {user.username},\n\nYour password has been successfully reset. '
-                    f'Your new password is: {new_password}\n\nPlease keep this information secure.',
+                    '',  # Plain text body is not needed when using HTML
                     settings.EMAIL_HOST_USER,
                     [user.email],
                     fail_silently=False,
+                    html_message=html_message  # HTML message
                 )
 
-        return response
+                # Redirect to the password reset done page
+                return redirect(reverse_lazy('password_reset_done'))
+            else:
+                # If passwords don't match
+                messages.error(request, 'Passwords do not match. Please try again.')
+                return render(request, self.template_name, {'valid_link': True, 'uidb64': uidb64, 'token': token})
+
+        else:
+            # If the token is invalid or expired
+            messages.error(request, 'The password reset link is invalid or has expired.')
+            return render(request, self.template_name, {'valid_link': False})

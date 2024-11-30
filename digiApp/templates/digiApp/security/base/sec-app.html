@@ -59,8 +59,41 @@
     display: inline-block;
     visibility: visible;
 }
-        
-    </style>
+
+
+/* Ensuring the input field and icon are aligned correctly */
+.input-group {
+    position: relative;
+    width: 100%;
+}
+
+.form-control {
+    height: calc(2.25rem + 2px);  /* Default Bootstrap input height */
+}
+
+.input-group-text {
+    cursor: pointer;
+    height: 100%;  /* Ensure the height of the icon matches the input field */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle-password {
+    cursor: pointer;
+}
+
+#eye-icon {
+    font-size: 20px;
+    color: #007bff;
+}
+
+.input-group .form-control {
+    height: 45px; 
+    padding: 10px; 
+}
+
+</style>
 </head>
 <body>
 
@@ -312,6 +345,28 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const passwordField = document.getElementById('password');
+    const togglePassword = document.getElementById('toggle-password');
+    const eyeIcon = document.getElementById('eye-icon');
+
+    togglePassword.addEventListener('click', function () {
+        // Toggle the password visibility
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            eyeIcon.classList.remove('bi-eye');
+            eyeIcon.classList.add('bi-eye-slash');
+        } else {
+            passwordField.type = 'password';
+            eyeIcon.classList.remove('bi-eye-slash');
+            eyeIcon.classList.add('bi-eye');
+        }
+    });
+});
+
 
 
     </script>

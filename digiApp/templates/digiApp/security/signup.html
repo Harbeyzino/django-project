@@ -7,7 +7,7 @@
         <div class="signup-content">
             <form method="POST" action="{% url 'security.register' %}" enctype="multipart/form-data" id="signup-form" class="signup-form">
                 {% csrf_token %}
-                <h2 class="form-title">Create Account</h2>
+                <h2 class="form-title text-center">Create Account</h2>
 
                 <!-- Social Authentication (Google and Facebook) -->
                 <div class="form-group mb-3">
@@ -18,41 +18,32 @@
                         <i class="bi bi-facebook"></i> Sign up with Facebook
                     </a>
                 </div>
-                <hr />
-                <p>Or sign up using:</p>
-                <!-- First Name Field -->
-                <!-- <div class="form-group mb-3">
-                    <label for="fname" class="form-label">First Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" name="fname" id="fname" required>
-                    <small id="fname-feedback" class="text-danger"></small>
-                </div> -->
 
-                <!-- Last Name Field -->
-                <!-- <div class="form-group mb-3">
-                    <label for="lname" class="form-label">Last Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" name="lname" id="lname" required>
-                    <small id="lname-feedback" class="text-danger"></small>
-                </div> -->
+                <!-- Centered 'Or' text with horizontal lines -->
+                <div class="form-group text-center mb-3">
+                    <div class="d-flex align-items-center">
+                        <hr class="flex-grow-1" style="border-top: 1px solid #272626;">
+                        <span style="padding: 0 10px;">Or sign up with</span>
+                        <hr class="flex-grow-1" style="border-top: 1px solid #313030;">
+                    </div>
+                </div>
 
                 <!-- Username Field -->
                 <div class="form-group mb-3">
-                    <!-- <label for="username" class="form-label">Username <span class="text-danger">*</span></label> -->
-                    <input type="text" class="form-control" name="username" id="username" required>
+                    <input type="text" class="form-control" name="username" id="username" placeholder="Username" required>
                     <small id="username-feedback" class="text-danger"></small>
                 </div>
 
                 <!-- Email Field -->
                 <div class="form-group mb-3">
-                    <!-- <label for="email" class="form-label">Email <span class="text-danger">*</span></label> -->
-                    <input type="email" class="form-control" name="email" id="email" required>
+                    <input type="email" class="form-control" name="email" id="email" placeholder="Email" required>
                     <small id="email-feedback" class="text-danger"></small>
                 </div>
 
                 <!-- Password Field -->
                 <div class="form-group mb-3">
-                    <!-- <label for="password1" class="form-label">Password <span class="text-danger">*</span></label> -->
                     <div class="input-group">
-                        <input type="password" class="form-control" name="password1" id="password1" required>
+                        <input type="password" class="form-control" name="password1" id="password1" placeholder="Password" required>
                         <span class="input-group-text" id="toggle-password1">
                             <i class="bi bi-eye" id="eye-icon1"></i>
                         </span>
@@ -74,9 +65,8 @@
                 
                 <!-- Confirm Password Field -->
                 <div class="form-group mb-3">
-                    <!-- <label for="password2" class="form-label">Repeat Password <span class="text-danger">*</span></label> -->
                     <div class="input-group">
-                        <input type="password" class="form-control" name="password2" id="password2" required>
+                        <input type="password" class="form-control" name="password2" id="password2" placeholder="Repeat Password" required>
                         <span class="input-group-text" id="toggle-password2">
                             <i class="bi bi-eye" id="eye-icon2"></i>
                         </span>
@@ -84,26 +74,15 @@
                     <small id="password2-feedback" class="text-danger"></small>
                 </div>
 
-
-                <!-- Terms and Conditions -->
-                <!-- <div class="form-group mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" name="agree-term" id="agree-term">
-                    <label for="agree-term" class="form-check-label">
-                        I agree to all statements in the <a href="#" class="text-decoration-none">Terms of Service</a>
-                    </label>
-                    <small id="agree-term-feedback" class="text-danger"></small>
-                </div> -->
-
                 <!-- Submit Button -->
                 <div class="form-group">
-                    <input type="submit" name="submit" id="submit" class="form-submit" value="Sign Up" />
+                    <input type="submit" name="submit" id="submit" class="form-submit w-100" value="Sign Up" />
                 </div>
             </form>
 
             <p class="loginhere">
                 Already have an account? <a href="{% url 'security.login' %}" class="text-decoration-none">Login here</a>
             </p>
-            
         </div>
     </div>
 </section>
