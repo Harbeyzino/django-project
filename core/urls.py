@@ -23,7 +23,5 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('digiApp.urls')),
-        # Include allauth's URLs
-    path('accounts/', include('allauth.urls')),  # This adds social authentication and account management routes 
 ]
 

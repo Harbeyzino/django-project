@@ -46,35 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'digiApp',
-    'sweetify',
-    'django.contrib.sites',  # Add this line
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
-    'allauth.socialaccount.providers.facebook', 
+    'sweetify', 
 ]
-
-
-# Site ID for django.contrib.sites
-SITE_ID = 1
-
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',  # Default authentication
-    'allauth.account.auth_backends.AuthenticationBackend',  # Django Allauth authentication
-)
-
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 'YOUR_GOOGLE_CLIENT_ID'  # Replace with your Google Client ID
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'YOUR_GOOGLE_CLIENT_SECRET'  # Replace with your Google Client Secret
-
-SOCIAL_AUTH_FACEBOOK_KEY = 'YOUR_FACEBOOK_APP_ID'  # Replace with your Facebook App ID
-SOCIAL_AUTH_FACEBOOK_SECRET = 'YOUR_FACEBOOK_APP_SECRET'  # Replace with your Facebook App Secret
-
-LOGIN_REDIRECT_URL = '/'  # The URL to redirect users after successful login or registration
-LOGOUT_REDIRECT_URL = '/'  # The URL to redirect users after logout
-
-
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
