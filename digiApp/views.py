@@ -564,7 +564,7 @@ def custom_password_reset(request):
                 )
 
             # Redirect to the password reset done page after sending the emails
-            return redirect('password_reset_complete')
+            return redirect('password_reset_done')
 
         else:
             # If no users are found
