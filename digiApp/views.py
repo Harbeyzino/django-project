@@ -299,14 +299,14 @@ def register(request):
             """
 
             # Use a custom sender email and name
-            from_email = 'Quality Grade Digital <no-reply@qualitygrade.com>'  # Custom "from" email and name
+            from_email = 'Quality Grade Digital <no-reply@qualitygrade.com>'  
             email = EmailMessage(subject, html_message, from_email, [email])
             email.content_subtype = "html"  # Set the content type to HTML
             email.send()
 
             # Show success message to user
             messages.success(request, "Registration successful! Please log in to continue.")
-            return redirect('password_reset_complete')  # Redirect to the password reset complete page
+            return redirect('security.login')
 
         else:
             messages.warning(request, "Passwords do not match.")
@@ -557,7 +557,7 @@ def custom_password_reset(request):
                 send_mail(
                     'Password Reset Request',
                     '',  # Plain text body is not needed when using HTML
-                    'Quality Grade Digital <no-reply@qualitygrade.com>',  # Custom sender name and email
+                    'Quality Grade Digital <no-reply@qualitygrade.com>',  
                     [email],  # Recipient email address
                     fail_silently=False,
                     html_message=html_message  # HTML message
@@ -587,7 +587,7 @@ from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
 from django.contrib.auth.tokens import default_token_generator
 from django.urls import reverse_lazy
-from .models import User  # Assuming your User model is here
+from .models import User  
 
 class CustomPasswordResetConfirmView(View):
     template_name = 'digiApp/security/password_reset_confirm.html'
@@ -720,5 +720,3 @@ class CustomPasswordResetConfirmView(View):
             # If the token is invalid or expired
             messages.error(request, 'The password reset link is invalid or has expired.')
             return render(request, self.template_name, {'valid_link': False})
-
-

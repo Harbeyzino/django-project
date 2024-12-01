@@ -33,7 +33,7 @@ urlpatterns = [
     ),
 
     path('reset/done/',
-          auth_views.PasswordResetCompleteView.as_view(template_name='digiApp/security/password_reset_done.html'), 
+          auth_views.PasswordResetCompleteView.as_view(template_name='digiApp/security/password_reset_complete.html'), 
           name='password_reset_complete'),
 
     ## Security Path 

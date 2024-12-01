@@ -93,6 +93,20 @@
     padding: 10px; 
 }
 
+@media (max-width: 576px) {
+    .alert-container {
+        margin-top: 0 !important;
+        padding-top: 10px; 
+    }
+    .alert-wrapper {
+        width: 100%;
+        padding: 0 10px;
+    }
+    .alert {
+        font-size: 14px; 
+    }
+}
+
 </style>
 </head>
 <body>
@@ -133,10 +147,11 @@
                     </div>
                 </div>
             </div>
-            {% endif %}
-
+        {% endif %}
+    
         {% block content %}{% endblock %}
     </div>
+    
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
