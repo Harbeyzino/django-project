@@ -220,7 +220,7 @@ def register(request):
             newUser.groups.add(group)
 
             # Prepare HTML email content
-            subject = '🎉 Welcome to Quality Grade Digital!'
+            subject = '🎉 Welcome to Quality Grade Digitals!'
             html_message = f"""
             <!DOCTYPE html>
             <html>
@@ -467,8 +467,6 @@ def edit_profile(request):
 
 
 
-
-
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -566,7 +564,7 @@ def custom_password_reset(request):
                 )
 
             # Redirect to the password reset done page after sending the emails
-            return redirect('password_reset_done')
+            return redirect('password_reset_complete')
 
         else:
             # If no users are found
@@ -681,7 +679,7 @@ class CustomPasswordResetConfirmView(View):
                 <body>
                     <div class="email-container">
                         <div class="email-header">
-                            <h1>🎉 Your Password Has Been Reset Successfully!</h1>
+                            <h1>Your Password Has Been Reset Successfully!</h1>
                         </div>
                         <div class="email-body">
                             <p>Hello <strong>{user.username}</strong>,</p>
