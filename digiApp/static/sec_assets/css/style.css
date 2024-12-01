@@ -145,8 +145,8 @@ body {
   -o-background-size: cover;
   -ms-background-size: cover;
   background-position: center center;
-  padding: 2px 0; 
-  /* margin-bottom: 100px; */
+  padding: 5px 0;
+  margin-bottom: 50px;
 }
 
 .container {
