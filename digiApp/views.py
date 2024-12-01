@@ -721,3 +721,4 @@ class CustomPasswordResetConfirmView(View):
             messages.error(request, 'The password reset link is invalid or has expired.')
             return render(request, self.template_name, {'valid_link': False})
 
+
