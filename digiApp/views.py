@@ -228,7 +228,7 @@ def register(request):
                 <style>
                     body {{
                         font-family: Arial, sans-serif;
-                        line-height: 1.6;
+                        line-height: 1.3;
                         color: #333;
                         background-color: #f9f9f9;
                         margin: 0;
@@ -248,7 +248,7 @@ def register(request):
                         text-align: center;
                     }}
                     p {{
-                        font-size: 16px;
+                        font-size: 13px;
                     }}
                     .cta {{
                         text-align: center;
@@ -510,14 +510,14 @@ def custom_password_reset(request):
                                 background-color: #ffffff;
                                 padding: 20px;
                                 border-radius: 8px;
-                                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                                box-shadow: 0 4px 8px rgba(0,2,2,0.1);
                             }}
                             h1 {{
                                 color: #0073e6;
                                 text-align: center;
                             }}
                             p {{
-                                font-size: 16px;
+                                font-size: 14px;
                             }}
                             .cta-button {{
                                 display: inline-block;
@@ -644,7 +644,7 @@ class CustomPasswordResetConfirmView(View):
                             padding: 20px;
                             background-color: #fff;
                             border-radius: 8px;
-                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                            box-shadow: 0 4px 8px rgba(0, 2, 2, 0.1);
                         }}
                         .email-header {{
                             text-align: center;
@@ -654,8 +654,8 @@ class CustomPasswordResetConfirmView(View):
                             color: #0073e6;
                         }}
                         .email-body {{
-                            font-size: 16px;
-                            line-height: 1.5;
+                            font-size: 12px;
+                            line-height: 1.2;
                         }}
                         .cta-button {{
                             display: inline-block;
@@ -712,7 +712,7 @@ class CustomPasswordResetConfirmView(View):
                 )
 
                 # Redirect to the password reset done page
-                return redirect(reverse_lazy('password_reset_done'))
+                return redirect(reverse_lazy('password_reset_complete'))
             else:
                 # If passwords don't match
                 messages.error(request, 'Passwords do not match. Please try again.')
