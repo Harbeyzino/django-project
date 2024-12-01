@@ -276,7 +276,7 @@ def register(request):
             </head>
             <body>
                 <div class="email-container">
-                    <h1>🎉 Welcome to Quality Grade Digitals!</h1>
+                    <h1> Welcome to Quality Grade Digitals!</h1>
                     <p>Hi <strong>{username}</strong>,</p>
                     <p>Thank you for joining <strong>Quality Grade Digitals</strong>. We're thrilled to have you on board!</p>
                     <p>Here's what you can do next:</p>
