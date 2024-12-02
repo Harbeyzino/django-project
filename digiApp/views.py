@@ -13,10 +13,17 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
-from sweetify import success, error
 import sweetify
 from django.core.mail import send_mail
 from datetime import datetime
+from django.shortcuts import redirect, render
+import sweetify
+from django.utils.text import slugify
+from django.utils.timezone import now
+from .models import Product
+from .utils import upload_product_image  # Cloudinary upload helper function
+import cloudinary.uploader
+
 
 
 # Functionality to render the product view page
@@ -48,16 +55,22 @@ def storeProduct(request):
         description = request.POST.get('description')
         price = request.POST.get('price')
         affiliate_link = request.POST.get('affiliate_link')
-        image = request.FILES.get('image')
+        image_file = request.FILES.get('image')
 
         try:
+            # Upload image to Cloudinary
+            image_url = None
+            if image_file:
+                public_id = f"products/{slugify(title)}-{int(now().timestamp())}"
+                image_url = upload_product_image(image_file, public_id=public_id)
+
             # Create and save the Product object
             newProduct = Product(
                 title=title,
                 description=description,
                 price=price,
                 affiliate_link=affiliate_link,
-                image=image
+                image=image_url  # Store Cloudinary URL
             )
             newProduct.save()
 
@@ -70,11 +83,11 @@ def storeProduct(request):
                 timer=3000
             )
 
-            # Redirect to admin page or any other page
+            # Redirect to admin page or another page
             return redirect('app.view_products')
 
         except Exception as e:
-            # Show Sweetify error message in case of failure
+            # Sweetify error message in case of failure
             sweetify.error(
                 request,
                 "Product Creation Failed",
@@ -83,11 +96,12 @@ def storeProduct(request):
                 timer=3000
             )
 
-            # You can also redirect to the form again if needed
-            return redirect('app.view_products')  # Replace with your URL name for this page
+            # Redirect to product creation form or handle error
+            return redirect('app.view_products')  # Replace with the correct URL name
 
     # If the request method is GET, render the product creation form
     return render(request, 'digiApp/admin-portal/adcreate_prod.html')
+
 
 
 
@@ -107,25 +121,29 @@ def updateProduct(request, id):
     if request.method == 'POST':
         try:
             # Get form data
-            title = request.POST.get('title')
-            description = request.POST.get('description')
-            price = request.POST.get('price')
-            affiliate_link = request.POST.get('affiliate_link')
-            image = request.FILES.get('image')
+            title = request.POST.get('title', product.title)
+            description = request.POST.get('description', product.description)
+            price = request.POST.get('price', product.price)
+            affiliate_link = request.POST.get('affiliate_link', product.affiliate_link)
+            image_file = request.FILES.get('image')  # New image file (optional)
 
-            # Update fields in the product instance
+            # Update product fields
             product.title = title
             product.description = description
             product.price = price
             product.affiliate_link = affiliate_link
 
-            if image:
-                product.image = image
+            # If a new image is provided, upload it to Cloudinary
+            if image_file:
+                public_id = f"products/{title}-{product.id}"  # Unique Cloudinary public ID
+                uploaded_url = upload_product_image(image_file, public_id=public_id)
+                if uploaded_url:
+                    product.image = uploaded_url
 
-            # Save the product
+            # Save the updated product
             product.save()
 
-            # Display success message using Sweetify
+            # Success message
             sweetify.success(
                 request,
                 'Product updated successfully!',
@@ -133,8 +151,9 @@ def updateProduct(request, id):
                 persistent="Okay",
                 timer=3000
             )
+
         except Exception as e:
-            # Handle errors and display error message using Sweetify
+            # Handle errors and show error message
             sweetify.error(
                 request,
                 'An error occurred:',
@@ -143,11 +162,13 @@ def updateProduct(request, id):
                 timer=3000
             )
 
-        # Redirect to the page that shows products (or another relevant page)
-        return redirect('app.view_products')  # Replace with actual view name for viewing products
+        # Redirect to the page showing products
+        return redirect('app.view_products')  # Replace with the correct URL/view name
 
-    # If the request method is GET, render the edit product form with product details
+    # If the request method is GET, render the edit form with existing product details
     return render(request, 'digiApp/admin-portal/adcreate_prod.html', {'product': product})
+
+
 
 # Functionality to delete product (admin only)
 @login_required
@@ -155,9 +176,16 @@ def updateProduct(request, id):
 def destroyProduct(request, id):
     product = get_object_or_404(Product, id=id)
 
-    # Check if this is a GET request after confirmation
     try:
+        # Delete the associated image from Cloudinary (if it exists)
+        if product.image and product.image.startswith("http"):
+            # Extract the public_id from the Cloudinary URL
+            public_id = product.image.split("/")[-1].split(".")[0]
+            cloudinary.uploader.destroy(public_id)
+
+        # Delete the product from the database
         product.delete()
+
         # Show success message
         sweetify.success(
             request,
@@ -176,7 +204,8 @@ def destroyProduct(request, id):
             timer=3000
         )
 
-    return redirect('app.view_products')
+    # Redirect to the page showing products
+    return redirect('app.view_products')  # Replace with your actual view name for viewing products
 
 
 """
@@ -578,7 +607,6 @@ def custom_password_reset(request):
 
 
 
-
 from django.views import View
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
@@ -720,3 +748,10 @@ class CustomPasswordResetConfirmView(View):
             # If the token is invalid or expired
             messages.error(request, 'The password reset link is invalid or has expired.')
             return render(request, self.template_name, {'valid_link': False})
+
+
+
+############# Function to handle Media ---Hosting  ###############
+
+
+

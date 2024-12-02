@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 
 
+
 class Product(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
@@ -11,11 +12,23 @@ class Product(models.Model):
     is_approved = models.BooleanField(default=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
-    image = models.ImageField( default='d4.jpg', upload_to='products/', blank=True, null=True)  
+    image = models.URLField(default='https://res.cloudinary.com/your-cloud-name/image/upload/v1606355678/default-placeholder.jpg', blank=True, null=True)
 
     def __str__(self):
         return self.title
 
+    def delete(self, *args, **kwargs):
+        # Delete the image from Cloudinary if it exists
+        if self.image:
+            try:
+                # Cloudinary expects the public ID, so you need to extract it from the image URL
+                public_id = self.image.name.split('/')[-1].split('.')[0]
+                destroy(public_id=public_id)  # Deletes the image from Cloudinary
+            except Exception as e:
+                print(f"Error deleting image from Cloudinary: {e}")
+        
+        # Proceed with the normal deletion process
+        super().delete(*args, **kwargs)
 
 
 class Profile(models.Model):

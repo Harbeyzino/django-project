@@ -46,7 +46,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'digiApp',
-    'sweetify', 
+    'sweetify',
+    'cloudinary',
+    'cloudinary_storage', 
 ]
 
 MIDDLEWARE = [
@@ -206,3 +208,20 @@ DATABASES = {
 
 """
 
+
+##################  Media Hosting/ Cloudinary ####################
+
+import cloudinary
+from decouple import config  # if using environment variables
+
+cloudinary.config(
+    cloud_name=config('CLOUD_NAME'),
+    api_key=config('API_KEY'),
+    api_secret=config('API_SECRET')
+)
+
+# Set Cloudinary as the default storage for media files
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# Set the media URL
+MEDIA_URL = 'https://res.cloudinary.com/{cloud_name}/image/upload/'

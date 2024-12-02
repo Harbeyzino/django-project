@@ -24,9 +24,9 @@
                 {% for product in products %}
                 <li class="list-group-item d-flex align-items-center">
                     {% if product.image %}
-                    <img src="{{ product.image.url }}" alt="" style="width: 50px; height: 50px; object-fit: cover; margin-right: 15px;">
+                    <img src="{{ product.image.url }}" alt="{{ product.title }}" style="width: 50px; height: 50px; object-fit: cover; margin-right: 15px;">
                     {% else %}
-                    <img src="{{ MEDIA_URL }}default.jpg" alt="Default Image" style="width: 50px; height: 50px; object-fit: cover; margin-right: 15px;">
+                    <img src="https://res.cloudinary.com/your_cloud_name/image/upload/v1234567890/default.jpg" alt="Default Image" style="width: 50px; height: 50px; object-fit: cover; margin-right: 15px;">
                     {% endif %}
                     <div class="d-flex flex-column">
                         <strong>{{ product.title }}</strong>
@@ -42,6 +42,7 @@
                     </div>
                 </li>
                 {% endfor %}
+
             </ul>
 
         </div>
