@@ -15,7 +15,7 @@ class Product(models.Model):
     is_approved = models.BooleanField(default=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
-    image = models.URLField(default='https://res.cloudinary.com/your-cloud-name/image/upload/v1606355678/default-placeholder.jpg', blank=True, null=True)
+    image = models.URLField(default='https://res.cloudinary.com/dtdsnmdfw/image/upload/v1733191506/default-placeholder.jpg_wfxcut.jpg', blank=True, null=True)
 
     def __str__(self):
         return self.title

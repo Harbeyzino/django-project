@@ -759,5 +759,14 @@ class CustomPasswordResetConfirmView(View):
 
 ############# Function to handle Media ---Hosting  ###############
 
+from django.core.paginator import Paginator
+from django.shortcuts import render
 
+def product_list(request):
+    products = Product.objects.all()  # Query your products
+    paginator = Paginator(products, 9)  # Show 9 products per page
 
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'digiApp/index.html', {'page_obj': page_obj})

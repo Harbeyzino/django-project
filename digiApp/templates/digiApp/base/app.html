@@ -26,6 +26,29 @@
   
   <!-- Main CSS File -->
   <link href="{% static 'assets/css/main.css' %}" rel="stylesheet">
+
+  <style>
+
+    .card:hover {
+      transform: translateY(-5px); /* Moves the card up slightly */
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.1); /* Larger grey shadow on hover */
+    }
+
+
+  .pagination .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  .pagination .page-link {
+    border-radius: 50px;
+    margin: 0 5px;
+  }
+  .pagination .page-item.disabled .page-link {
+    color: #ccc;
+  }
+
+
+  </style>
 </head>
 <body class="index-page">
   <!-- Header section -->

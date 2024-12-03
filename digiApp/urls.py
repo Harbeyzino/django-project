@@ -4,9 +4,10 @@ from django.conf import settings
 from django.conf.urls.static import static 
 from django.contrib.auth import views as auth_views
 from .views import CustomPasswordResetConfirmView
-
+from .views import product_list
 
 urlpatterns = [
+    path('', product_list, name='index'),
     path('', views.homepg, name='app.home' ),
     path('product/', views.products, name='app.view_products' ),
 

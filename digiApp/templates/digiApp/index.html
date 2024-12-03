@@ -65,25 +65,64 @@
   </section><!-- /Hero Section -->
   {% endif %}
 
-  <!-- Cards Section -->
-<section id="cards" class="cards section">
+<!-- Cards Section -->
+<section id="cards" class="cards section" style="padding-top: 30px; padding-bottom: 30px;">
   <div class="container">
-      <div class="row no-gutters">
-          {% for product in products %}
-          <div class="col-lg-4 col-md-6 card" data-aos="fade-up" data-aos-delay="100">
-              <!-- Check if there is an image -->
-              {% if product.image %}
-                  <img src="{{ product.image }}" alt="{{ product.title }}" style="max-width: 100%; height: auto;">
-              {% else %}
-                <img src="https://res.cloudinary.com/dtdsnmdfw/image/upload/v1234567890/default.jpg" alt="Default Image" style="width: 50px; height: 50px; object-fit: cover; margin-right: 15px;">
-              {% endif %}
-              <span>${{ product.price }}</span>
-              <h4>{{ product.title }}</h4>
-              <p>{{ product.description }}</p>
-              <p><a href="{{ product.affiliate_link }}" target="_blank" rel="noopener noreferrer" class="btn btn-link">Visit Link</a></p>
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+          {% for product in page_obj %}
+          <div class="col">
+              <div class="card" data-aos="fade-up" data-aos-delay="100" style="border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                  <!-- Check if there is an image -->
+                  {% if product.image %}
+                      <img src="{{ product.image }}" alt="{{ product.title }}" class="card-img-top" style="max-width: 70%; height: 150px; margin: 0 auto;">
+                  {% else %}
+                      <img src="https://res.cloudinary.com/dtdsnmdfw/image/upload/c_thumb,w_200,g_face/v1733191506/default-placeholder.jpg_wfxcut.jpg" alt="Default Image" class="card-img-top" style="max-width: 70%; height: 150px; margin: 0 auto;">
+                  {% endif %}
+                  <div class="card-body">
+                      <h4 class="card-title">{{ product.title }}</h4>
+                      <p class="card-text">{{ product.description }}</p>
+                      <span class="d-block mb-2">${{ product.price }}</span>
+                      <a href="{{ product.affiliate_link }}" target="_blank" rel="noopener noreferrer" class="btn btn-link">Visit Link</a>
+                  </div>
+              </div>
           </div>
           {% endfor %}
-      </div>
+      </div><br><br>
+
+      <!-- Pagination Controls -->
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page=1" aria-label="First">
+                <span aria-hidden="true">&laquo;&laquo;</span>
+              </a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+          {% endif %}
+          
+          <li class="page-item disabled">
+            <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+          </li>
+
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                <span aria-hidden="true">&raquo;&raquo;</span>
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
   </div>
 </section>
 {% endblock %}
