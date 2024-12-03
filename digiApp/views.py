@@ -420,15 +420,14 @@ def adminHome(request):
 
 
 
+
 @login_required
 def profile_page(request):
     user = request.user
     profile, created = Profile.objects.get_or_create(user=user)
 
-    
-    profile.refresh_from_db()
-
     if request.method == "POST":
+        # Update profile fields
         profile.full_name = request.POST.get("full_name", profile.full_name)
         profile.about = request.POST.get("about", profile.about)
         profile.company = request.POST.get("company", profile.company)
@@ -436,16 +435,23 @@ def profile_page(request):
         profile.country = request.POST.get("country", profile.country)
         profile.address = request.POST.get("address", profile.address)
         profile.phone_number = request.POST.get("phone_number", profile.phone_number)
-        
+
+        # Update profile picture if uploaded
         if request.FILES.get("profile_picture"):
             profile.profile_picture = request.FILES["profile_picture"]
 
-        # user email
+        # Update user email
         user.email = request.POST.get("email", user.email)
         user.save()
-        profile.save()
+
+        # Save the profile
+        try:
+            profile.save()
+        except Exception as e:
+            print(f"Error saving profile: {e}")
 
     return render(request, "digiApp/admin-portal/profile_page.html", {"profile": profile})
+
 
 
 @login_required

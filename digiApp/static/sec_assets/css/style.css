@@ -132,6 +132,7 @@ h2 {
   clear: both; }
 
   body {
+    height: 50%;
     font-size: 14px;
     line-height: 1.8;
     color: #222;

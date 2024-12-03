@@ -131,13 +131,18 @@
             <div class="row mb-3">
                 <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                 <div class="col-md-8 col-lg-9">
-                    {% if profile_picture %}
-                    <img src="{{ profile_picture.url }}" alt="Profile Picture" class="rounded-circle" width="100"><br>
-                    {% elif user.profile.profile_picture %}
-                    <img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture" class="rounded-circle" width="100"><br>
-                    {% else %}
-                    <img src="path/to/placeholder-image.jpg" alt="Placeholder Profile Picture" class="rounded-circle" width="100"><br>
-                    {% endif %}
+                  {% if profile_picture %}
+                  <!-- Directly use the uploaded profile picture -->
+                  <img src="{{ user.profile.profile_picture.url }}?w=300&h=300&fit=crop&effect=grayscale|sepia" alt="Profile Picture" class="rounded-circle" width="100"><br><br>
+              {% elif user.profile.profile_picture %}
+                  <!-- Use the user's profile picture from the database -->
+                  <img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture" class="rounded-circle" width="100"><br>
+              {% else %}
+                  <!-- Use a default placeholder image -->
+                  <img src="https://res.cloudinary.com/your-cloud-name/image/upload/v1234567890/placeholder-profile.jpg" 
+                       alt="Placeholder Profile Picture" class="rounded-circle" width="100"><br>
+              {% endif %}
+              
                     <div class="pt-2">
                         <label class="btn btn-primary btn-sm" title="Upload new profile image">
                             <i class="bi bi-upload"></i>
