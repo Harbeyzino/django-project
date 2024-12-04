@@ -2,129 +2,103 @@
 
 {% load static %}
 {% block content %}
+
 <!-- Hero Section -->
-  {% if user.is_authenticated %}
-  <section id="hero" class=" hero dark-background">
-    <div id="carouselExampleInterval" class="carousel slide" data-ride="carousel">
-      <div class="carousel-inner">
-        <!-- First Slide -->
-        <div class="carousel-item active" data-interval="5000">
-          <img src="{% static 'assets/img/hero-bg.jpg' %}" class="d-block w-100 carousel-image" alt="Slide 1">
-          <div class="container" data-aos="fade-up" data-aos-delay="100">
-            <div class="row justify-content-start">
-              <div class="col-lg-8">
-                <h2>Welcome to QDG</h2>
-                <p>We're a team of talented designers creating innovative digital products to elevate your online presence.</p>
-                <a href="{% url 'security.signup' %}" class="btn-get-started">Get Started</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Second Slide -->
-        <div class="carousel-item" data-interval="5000">
-          <img src="{% static 'assets/img/cta-bg.jpg' %}" class="d-block w-100 carousel-image" alt="Slide 2">
-          <div class="container" data-aos="fade-up" data-aos-delay="100">
-            <div class="row justify-content-start">
-              <div class="col-lg-8">
-                <h2>Innovative Designs</h2>
-                <p>Experience creativity like never before.</p>
-                <a href="#services" class="btn-get-started">Explore More</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Third Slide -->
-        <div class="carousel-item" data-interval="5000">
-          <img src="{% static 'assets/img/services.jpg' %}" class="d-block w-100 carousel-image" alt="Slide 3">
-          <div class="container" data-aos="fade-up" data-aos-delay="100">
-            <div class="row justify-content-start">
-              <div class="col-lg-8">
-                <h2>Start Your Journey</h2>
-                <p>Join us today to unlock full access to our services.</p>
-                <a href="#contact" class="btn-get-started">Contact Us</a>
-              </div>
-            </div>
-          </div>
-        </div>
+{% if user.is_authenticated %}
+<section id="dashboard-hero" class="dashboard-hero section dark-background">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row justify-content-start">
+      <div class="col-lg-8">
+        <h2>Welcome Back, {{ user.username }}!</h2>
+        <p>Explore our range of innovative digital products crafted just for you.</p>
       </div>
     </div>
-  </section>  
-
-  {% else %}
-  <section id="hero" class="hero section dark-background">
-    <img src="{% static 'assets/img/hero-bg.jpg' %}" alt="">
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
-      <div class="row justify-content-start">
-        <div class="col-lg-8">
-          <h2>Welcome to QDG</h2>
-          <p>We're a team of talented designers creating innovative digital products to elevate your online presence.</p>
-          <a href="{% url 'security.signup' %}" class="btn-get-started">Get Started</a>
-        </div>
-      </div>
+    <!-- Search Bar -->
+    <div class="search-bar d-flex align-items-center order-md-1 order-2 mt-4">
+      <form method="GET" action="{% url 'index' %}" class="d-flex">
+        <input
+          type="text"
+          name="search"
+          placeholder="Search products..."
+          class="form-control me-2"
+          value="{{ request.GET.search }}"
+          aria-label="Search"
+        >
+        <button type="submit" class="btn btn-outline-success" title="Search">
+          <i class="bi bi-search"></i>
+        </button>
+      </form>
     </div>
-  </section><!-- /Hero Section -->
-  {% endif %}
-
-<!-- Cards Section -->
-<section id="cards" class="cards section" style="padding-top: 30px; padding-bottom: 30px;">
-  <div class="container">
-      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-          {% for product in page_obj %}
-          <div class="col">
-              <div class="card" data-aos="fade-up" data-aos-delay="100" style="border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08); transition: transform 0.3s ease, box-shadow 0.3s ease;">
-                  <!-- Check if there is an image -->
-                  {% if product.image %}
-                      <img src="{{ product.image }}" alt="{{ product.title }}" class="card-img-top" style="max-width: 70%; height: 150px; margin: 0 auto;">
-                  {% else %}
-                      <img src="https://res.cloudinary.com/dtdsnmdfw/image/upload/c_thumb,w_200,g_face/v1733191506/default-placeholder.jpg_wfxcut.jpg" alt="Default Image" class="card-img-top" style="max-width: 70%; height: 150px; margin: 0 auto;">
-                  {% endif %}
-                  <div class="card-body">
-                      <h4 class="card-title">{{ product.title }}</h4>
-                      <p class="card-text">{{ product.description }}</p>
-                      <span class="d-block mb-2">${{ product.price }}</span>
-                      <a href="{{ product.affiliate_link }}" target="_blank" rel="noopener noreferrer" class="btn btn-link">Visit Link</a>
-                  </div>
-              </div>
-          </div>
-          {% endfor %}
-      </div><br><br>
-
-      <!-- Pagination Controls -->
-      <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
-          {% if page_obj.has_previous %}
-            <li class="page-item">
-              <a class="page-link" href="?page=1" aria-label="First">
-                <span aria-hidden="true">&laquo;&laquo;</span>
-              </a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-            </li>
-          {% endif %}
-          
-          <li class="page-item disabled">
-            <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
-          </li>
-
-          {% if page_obj.has_next %}
-            <li class="page-item">
-              <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
-                <span aria-hidden="true">&raquo;&raquo;</span>
-              </a>
-            </li>
-          {% endif %}
-        </ul>
-      </nav>
   </div>
 </section>
-{% endblock %}
 
+<!-- Product Cards -->
+<div class="container mt-4">
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for product in page_obj %}
+      <div class="col">
+        <div class="card" style="border-radius: 10px; box-shadow: 0 4px 6px rgba(26, 25, 25, 0.1);">
+          <!-- Product Image -->
+          {% if product.image %}
+            <img src="{{ product.image }}" alt="{{ product.title }}" class="card-img-top" style="max-width: 100%; height: 200px;">
+          {% else %}
+            <img src="https://res.cloudinary.com/dtdsnmdfw/image/upload/v1733191506/default-placeholder.jpg_wfxcut.jpg" alt="Placeholder Image" class="card-img-top" style="max-width: 100%; height: 200px;">
+          {% endif %}
+
+          <!-- Product Details -->
+          <div class="card-body">
+            <h5 class="card-title">{{ product.title }}</h5>
+            <p class="card-text">{{ product.description }}</p>
+            <span>${{ product.price }}</span><br><br>
+            <a href="{{ product.affiliate_link }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">View Product</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Pagination Controls -->
+<nav aria-label="Page navigation" class="mt-4">
+  <ul class="pagination justify-content-center">
+    {% if page_obj.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page=1&search={{ request.GET.search }}" aria-label="First">&laquo;&laquo;</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}&search={{ request.GET.search }}" aria-label="Previous">&laquo;</a>
+      </li>
+    {% endif %}
+
+    <li class="page-item disabled">
+      <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+    </li>
+
+    {% if page_obj.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}&search={{ request.GET.search }}" aria-label="Next">&raquo;</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&search={{ request.GET.search }}" aria-label="Last">&raquo;&raquo;</a>
+      </li>
+    {% endif %}
+  </ul>
+</nav>
+
+{% else %}
+<!-- Hero Section for Non-Authenticated Users -->
+<section id="hero" class="hero section dark-background">
+  <img src="{% static 'assets/img/hero-bg.jpg' %}" alt="">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row justify-content-start">
+      <div class="col-lg-8">
+        <h2>Welcome to QDG</h2>
+        <p>We're a team of talented designers creating innovative digital products to elevate your online presence.</p>
+        <a href="{% url 'security.signup' %}" class="btn-get-started">Get Started</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}
 

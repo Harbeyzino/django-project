@@ -23,6 +23,7 @@ from django.utils.timezone import now
 from .models import Product
 from .utils import upload_product_image  # Cloudinary upload helper function
 import cloudinary.uploader
+from django.core.paginator import Paginator
 
 
 
@@ -30,10 +31,42 @@ import cloudinary.uploader
 @login_required(login_url='/security/sign_in/')
 @allowed_users(allowed_roles=['admin'])
 def products(request):
-    # Logic to retrieve and display products
+    # Get the filter and search query from GET parameters
+    filter_option = request.GET.get('filter')
+    query = request.GET.get('search')
+
+    # Retrieve all products initially
     products = Product.objects.all()
 
-    return render(request, 'digiApp/products.html', {'products': products})
+    # Apply search filter if search query is present
+    if query:
+        products = products.filter(title__icontains=query)
+
+    # Apply filter option (today, this_month, this_year) if any
+    if filter_option:
+        today = now().date()
+        if filter_option == 'today':
+            products = products.filter(created_at__date=today)
+        elif filter_option == 'this_month':
+            products = products.filter(
+                created_at__year=today.year, created_at__month=today.month
+            )
+        elif filter_option == 'this_year':
+            products = products.filter(created_at__year=today.year)
+
+    # Pagination setup
+    paginator = Paginator(products, 5)  # Display 5 products per page
+    page_number = request.GET.get('page')
+    products_page = paginator.get_page(page_number)
+
+    # Return the render with paginated products and search query
+    return render(request, 'digiApp/products.html', {
+        'products': products_page,
+        'query': query,
+        'filter_option': filter_option
+    })
+
+
 
 # Home page, accessible to everyone but with authentication check
 def homepg(request):
@@ -760,13 +793,27 @@ class CustomPasswordResetConfirmView(View):
 ############# Function to handle Media ---Hosting  ###############
 
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.shortcuts import render
+from .models import Product
 
 def product_list(request):
-    products = Product.objects.all()  # Query your products
+    search_query = request.GET.get('search', '')  # Get search query
+    page_number = request.GET.get('page', 1)  # Get current page number (default to 1)
+    
+    # Query all products and filter based on the search query
+    products = Product.objects.all()
+    if search_query:
+        products = products.filter(Q(title__icontains=search_query) | Q(description__icontains=search_query))
+    
+    # Pagination setup
     paginator = Paginator(products, 9)  # Show 9 products per page
-
-    page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'digiApp/index.html', {'page_obj': page_obj})
+    # Pass the products and search query to the template
+    context = {
+        'page_obj': page_obj,
+        'search_query': search_query,
+    }
+    return render(request, 'digiApp/index.html', context)
+
