@@ -8,7 +8,7 @@
 <section id="dashboard-hero" class="dashboard-hero section dark-background">
   <div class="container" data-aos="fade-up" data-aos-delay="100">
     <div class="row justify-content-start">
-      <div class="col-lg-8">
+      <div class="col-lg-8"><br><br>
         <h2>Welcome Back, {{ user.username }}!</h2>
         <p>Explore our range of innovative digital products crafted just for you.</p>
       </div>
@@ -37,26 +37,29 @@
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
     {% for product in page_obj %}
       <div class="col">
-        <div class="card" style="border-radius: 10px; box-shadow: 0 4px 6px rgba(26, 25, 25, 0.1);">
+        <div class="card" style="border-radius: 10px; background-color: #f8f9fa; box-shadow: 0 4px 6px rgba(26, 25, 25, 0.1);">
           <!-- Product Image -->
           {% if product.image %}
             <img src="{{ product.image }}" alt="{{ product.title }}" class="card-img-top" style="max-width: 100%; height: 200px;">
           {% else %}
-            <img src="https://res.cloudinary.com/dtdsnmdfw/image/upload/v1733191506/default-placeholder.jpg_wfxcut.jpg" alt="Placeholder Image" class="card-img-top" style="max-width: 100%; height: 200px;">
+            <img src="https://res.cloudinary.com/dtdsnmdfw/image/upload/v1733350996/products/tht-1733350996.webp" alt="Placeholder Image" class="card-img-top" style="max-width: 100%; height: 200px;">
           {% endif %}
 
           <!-- Product Details -->
-          <div class="card-body">
-            <h5 class="card-title">{{ product.title }}</h5>
-            <p class="card-text">{{ product.description }}</p>
-            <span>${{ product.price }}</span><br><br>
-            <a href="{{ product.affiliate_link }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">View Product</a>
+          <div class="card-body" style="background-color: #d5d9dd;"> <!-- Grey inside container -->
+            <h5 class="card-title" style="font-weight: bold;">{{ product.title }}</h5>
+            <p class="card-text" style="font-size: 0.9em;">{{ product.description }}</p>
+            <span style="color: red; font-size: 0.9em;">${{ product.price }}</span><br><br>
+            <a href="{{ product.affiliate_link }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-danger">Visit</a>
           </div>
         </div>
       </div>
     {% endfor %}
   </div>
 </div>
+
+
+
 
 <!-- Pagination Controls -->
 <nav aria-label="Page navigation" class="mt-4">
