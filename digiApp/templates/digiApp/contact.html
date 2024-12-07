@@ -1,0 +1,104 @@
+{% extends 'digiApp/base/app.html' %}
+
+{% load static %}
+{% block content %}
+
+<!-- Contact Section -->
+<!-- Contact Section -->
+<section id="contact" class="contact section">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+        <span>Contact Us</span>
+        <h2>Get in Touch</h2>
+        <p>Have questions? Reach out to us and we’ll help you take your digital journey forward.</p>
+    </div><!-- End Section Title -->
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row gy-4">
+
+            <!-- Address Info -->
+            <div class="col-lg-4">
+                <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="200">
+                    <i class="bi bi-geo-alt"></i>
+                    <h3>Address</h3>
+                    <p>123 Digital Lane, Abuja, Nigeria</p>
+                </div>
+            </div><!-- End Address Info -->
+
+            <!-- Phone Info -->
+            <div class="col-lg-4 col-md-6">
+                <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="300">
+                    <i class="bi bi-telephone"></i>
+                    <h3>Call Us</h3>
+                    <p>+234 (0) 800 123 4567</p>
+                </div>
+            </div><!-- End Phone Info -->
+
+            <!-- Email Info -->
+            <div class="col-lg-4 col-md-6">
+                <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="400">
+                    <i class="bi bi-envelope"></i>
+                    <h3>Email Us</h3>
+                    <p>support@digitalproducts.com</p>
+                </div>
+            </div><!-- End Email Info -->
+
+        </div>
+
+        <div class="row gy-4 mt-4">
+            <!-- Google Maps -->
+            <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126917.49593633112!2d7.334167200000002!3d9.0764789!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x104dd9c1b3aa35c5%3A0xa970b9f208cc0b2a!2sAbuja%2C%20Nigeria!5e0!3m2!1sen!2sus!4v1738501234567!5m2!1sen!2sus" 
+                        frameborder="0" 
+                        style="border:0; width: 100%; height: 400px;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div><!-- End Google Maps -->
+
+            <!-- Contact Form -->
+            <div class="col-lg-6">
+                <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="400">
+                    <div class="row gy-4">
+
+                        <div class="col-md-6">
+                            <input type="text" name="name" class="form-control" placeholder="Your Name" required="">
+                        </div>
+
+                        <div class="col-md-6">
+                            <input type="email" class="form-control" name="email" placeholder="Your Email" required="">
+                        </div>
+
+                        <div class="col-md-12">
+                            <input type="text" class="form-control" name="subject" placeholder="Subject" required="">
+                        </div>
+
+                        <div class="col-md-12">
+                            <textarea class="form-control" name="message" rows="6" placeholder="Your Message" required=""></textarea>
+                        </div>
+
+                        <div class="col-md-12 text-center">
+                            <div class="loading">Loading</div>
+                            <div class="error-message"></div>
+                            <div class="sent-message">Your message has been sent. Thank you!</div>
+
+                            <button type="submit" class="btn btn-primary">Send Message</button>
+                        </div>
+
+                    </div>
+                </form>
+            </div><!-- End Contact Form -->
+
+        </div>
+
+    </div>
+
+</section><!-- /Contact Section -->
+
+
+
+
+{% endblock %}

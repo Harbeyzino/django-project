@@ -817,3 +817,12 @@ def product_list(request):
     }
     return render(request, 'digiApp/index.html', context)
 
+
+def service(request):
+    return render(request, 'digiApp/service.html')
+
+def about(request):
+    return render(request, 'digiApp/about.html')
+
+def contact(request):
+    return render(request, 'digiApp/contact.html')

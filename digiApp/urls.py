@@ -10,6 +10,10 @@ urlpatterns = [
     path('', product_list, name='index'),
     path('', views.homepg, name='app.home' ),
     path('product/', views.products, name='app.view_products' ),
+    path('service/', views.service, name='app.service' ),
+    path('about/', views.about, name='app.about' ),
+    path('contact/', views.contact, name='app.contact' ),
+    
 
     
     path('create_product/', views.createProduct, name='app.create_product' ),

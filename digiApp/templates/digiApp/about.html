@@ -1,0 +1,46 @@
+{% extends 'digiApp/base/app.html' %}
+
+{% load static %}
+{% block content %}
+
+<!-- About Section -->
+<section id="about" class="about section">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+      <span>About Us</span>
+      <h2>Who We Are</h2>
+      <p>Delivering innovative digital solutions to help you grow, scale, and thrive in a dynamic market.</p>
+    </div><!-- End Section Title -->
+
+    <div class="container">
+
+      <div class="row gy-4">
+
+        <!-- Image Column -->
+        <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-up" data-aos-delay="100">
+          <img src="{% static 'assets/img/about-us-digital.jpg" class="img-fluid rounded' %}" alt="About Us">
+        </div>
+
+        <!-- Content Column -->
+        <div class="col-lg-6 order-2 order-lg-1 content" data-aos="fade-up" data-aos-delay="200">
+          <h3>Empowering Your Digital Journey</h3>
+          <p class="fst-italic">
+            We are a team of passionate professionals dedicated to creating impactful digital experiences that drive success.
+          </p>
+          <ul>
+            <li><i class="bi bi-check-circle"></i> <span>Custom solutions designed to meet your unique business goals.</span></li>
+            <li><i class="bi bi-check-circle"></i> <span>Expertise in design, development, and marketing strategies.</span></li>
+            <li><i class="bi bi-check-circle"></i> <span>A commitment to innovation, quality, and customer satisfaction.</span></li>
+          </ul>
+          <a href="#services" class="read-more"><span>Explore Our Services</span><i class="bi bi-arrow-right"></i></a>
+        </div>
+
+      </div>
+
+    </div>
+
+</section><!-- /About Section -->
+
+    
+{% endblock %}
