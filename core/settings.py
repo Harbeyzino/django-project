@@ -177,7 +177,7 @@ DATABASES = {
   ############## LIVE postgreSQL DATABASE ####################
 ""
 
-"""from decouple import config
+from decouple import config
 import dj_database_url
 
 # Get the database URL from the environment variable
@@ -187,13 +187,12 @@ DATABASES = {
     'default': dj_database_url.parse(DATABASE_URL),
 }
 
-"""
 
 
 
 #################### postgreSQL DATABASE ######################
 
-
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -204,6 +203,8 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+"""
 
 
 
