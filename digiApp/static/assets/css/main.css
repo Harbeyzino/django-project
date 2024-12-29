@@ -729,6 +729,36 @@ h6 {
   }
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.footer {
+  margin: -10;
+  padding: 0;
+  position: relative;
+  margin-top: auto; /* Pushes footer to the bottom of the page */
+}
+
+.footer .footer-about,
+.footer .footer-links,
+.footer .footer-newsletter {
+  margin-bottom: 0;  /* Ensure no space below each section */
+  padding-bottom: 0; /* Removes padding below content */
+}
+
+.footer .footer-newsletter .newsletter-form {
+  margin-bottom: 0;
+}
+
+.footer .copyright {
+  margin-top: 0; /* Remove space before copyright */
+}
+
 /*--------------------------------------------------------------
 # Scroll Top Button
 --------------------------------------------------------------*/
@@ -1709,12 +1739,5 @@ section,
 }
 
 
-.carousel-image{
-  width: 100%;
-  height: 50vh;
-}
 
-.index-page {
-  margin-bottom: 150px;
-}
 
