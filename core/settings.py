@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'digiApp',
     'sweetify',
     'cloudinary',
-    'cloudinary_storage', 
+    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
