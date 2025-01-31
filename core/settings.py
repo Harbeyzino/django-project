@@ -177,6 +177,7 @@ DATABASES = {
   ############## LIVE postgreSQL DATABASE ####################
 ""
 
+"""
 from decouple import config
 import dj_database_url
 
@@ -187,12 +188,15 @@ DATABASES = {
     'default': dj_database_url.parse(DATABASE_URL),
 }
 
+"""
+
+
 
 
 
 #################### postgreSQL DATABASE ######################
 
-"""
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -204,7 +208,7 @@ DATABASES = {
     }
 }
 
-"""
+
 
 
 
